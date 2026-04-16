@@ -86,24 +86,17 @@ button:hover {
 <div class="container">
 
     <form action="https://formspree.io/f/xxxxx" method="POST">
-        <label>Full Name</label>
-        <input type="text" required>
+        
+<input type="text" name="name" placeholder="Full Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<input type="text" name="title" placeholder="Title of Work" required>
 
-        <label>Email</label>
-        <input type="email" required>
+<select name="type">
+  <option>Abstract</option>
+  <option>Manuscript</option>
+</select>
 
-        <label>Title of Work</label>
-        <input type="text" required>
-
-        <label>Type</label>
-        <select>
-            <option>Abstract</option>
-            <option>Manuscript</option>
-        </select>
-
-        <label>Message</label>
-        <textarea rows="5"></textarea>
-
+<textarea name="message" placeholder="Message"></textarea>
         <button type="submit">Submit</button>
     </form>
 
