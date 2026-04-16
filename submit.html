@@ -110,19 +110,20 @@ document.getElementById("submitForm").addEventListener("submit", async function(
 </nav>
 
 <div class="container">
+https://formspree.io/f/abcde123
 
-    https://formspree.io/f/YOUR_ID
+  <input type="text" name="name" placeholder="Full Name" required>
 
-  <input type="text" id="name" placeholder="Full Name" required>
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="text" id="title" placeholder="Title of Work" required>
+  <input type="email" name="email" placeholder="Email" required>
 
-  <select id="type">
-    <option>Abstract</option>
-    <option>Manuscript</option>
+  <input type="text" name="title" placeholder="Title of Work" required>
+
+  <select name="type">
+    <option value="Abstract">Abstract</option>
+    <option value="Manuscript">Manuscript</option>
   </select>
 
-  <textarea id="message" placeholder="Message"></textarea>
+  <textarea name="message" placeholder="Message"></textarea>
 
   <button type="submit">Submit</button>
 
