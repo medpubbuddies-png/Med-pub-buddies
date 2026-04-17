@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submission Successful</title>
+</head>
+
+<body style="font-family: Arial; text-align: center; padding: 50px;">
+
+<h1>✅ Submission Successful</h1>
+<p>Thank you for submitting your work to MedPub Buddies.</p>
+
+<a href="index.html">Go Back Home</a>
+<form action="https://formspree.io/f/mnjljrav" method="POST">
+
+  <!-- 🔽 ADD IT HERE -->
+  <input type="hidden" name="_redirect" value="https://medpubbuddies-png.github.io/Med-pub-buddies/success.html">
+
+  <input type="text" name="name" placeholder="Full Name" required>
+
+  <input type="email" name="email" placeholder="Email" required>
+
+  <input type="text" name="title" placeholder="Title of Work" required>
+
+  <select name="type" required>
+    <option value="">Select Type</option>
+    <option value="Abstract">Abstract</option>
+    <option value="Manuscript">Manuscript</option>
+  </select>
+
+  <textarea name="message" placeholder="Message" required></textarea>
+
+  <button type="submit">Submit</button>
+
+</form>
+</body>
+</html>
