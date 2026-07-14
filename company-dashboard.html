@@ -125,6 +125,13 @@ container.innerHTML += `
 <p><b>Message:</b> ${request.message}</p>
 
 <p><b>Status:</b> ${request.status}</p>
+<button onclick="updateStatus('${request.id}', 'Accepted')">
+Accept
+</button>
+
+<button onclick="updateStatus('${request.id}', 'Rejected')">
+Reject
+</button>
 
 </div>
 
@@ -135,7 +142,28 @@ container.innerHTML += `
 
 
 }
+async function updateStatus(id, newStatus){
 
+const { error } = await supabaseClient
+.from("connections")
+.update({
+status: newStatus
+})
+.eq("id", id);
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Request updated!");
+loadRequests();
+
+}
+
+}
 
 
 loadRequests();
