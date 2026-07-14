@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Company Dashboard - MedPub Buddies</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+}
+
+header {
+    background:#1565c0;
+    color:white;
+    padding:40px;
+    text-align:center;
+}
+
+.container {
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.card {
+    background:white;
+    padding:20px;
+    margin:15px 0;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+<h1>Publication Company Dashboard</h1>
+<p>Researcher connection requests</p>
+</header>
+
+
+<div class="container" id="requests">
+
+<p>Loading requests...</p>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function loadRequests(){
+
+
+const { data, error } = await supabaseClient
+.from("connections")
+.select("*");
+
+
+
+const container = document.getElementById("requests");
+
+
+
+if(error){
+
+container.innerHTML = "Error: " + error.message;
+return;
+
+}
+
+
+
+if(data.length === 0){
+
+container.innerHTML = "<p>No connection requests yet.</p>";
+return;
+
+}
+
+
+
+container.innerHTML = "";
+
+
+
+data.forEach(request => {
+
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>Researcher Request</h3>
+
+<p><b>Email:</b> ${request.researcher_email}</p>
+
+<p><b>Message:</b> ${request.message}</p>
+
+<p><b>Status:</b> ${request.status}</p>
+
+</div>
+
+`;
+
+
+});
+
+
+}
+
+
+
+loadRequests();
+
+
+</script>
+
+
+</body>
+</html>
