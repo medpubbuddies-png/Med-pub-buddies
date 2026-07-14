@@ -50,7 +50,22 @@ header {
 </header>
 
 
-<div class="container" id="requests">
+<div class="container">
+
+<h2>Connection Requests</h2>
+
+<div id="requests">
+<p>Loading requests...</p>
+</div>
+
+
+<h2>Submitted Manuscripts</h2>
+
+<div id="manuscripts">
+<p>Loading manuscripts...</p>
+</div>
+
+</div>
 
 <p>Loading requests...</p>
 
@@ -164,9 +179,60 @@ loadRequests();
 }
 
 }
+async function loadManuscripts(){
 
+const { data, error } = await supabaseClient
+.from("manuscripts")
+.select("*");
+
+
+const container = document.getElementById("manuscripts");
+
+
+if(error){
+
+container.innerHTML = "Error: " + error.message;
+return;
+
+}
+
+
+if(data.length === 0){
+
+container.innerHTML = "<p>No manuscripts submitted yet.</p>";
+return;
+
+}
+
+
+container.innerHTML = "";
+
+
+data.forEach(manuscript => {
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>${manuscript.title}</h3>
+
+<p><b>Researcher:</b> ${manuscript.researcher_email}</p>
+
+<p><b>Abstract:</b> ${manuscript.abstract}</p>
+
+<p><b>Status:</b> ${manuscript.status}</p>
+
+</div>
+
+`;
+
+});
+
+
+}
 
 loadRequests();
+loadManuscripts();
 
 
 </script>
