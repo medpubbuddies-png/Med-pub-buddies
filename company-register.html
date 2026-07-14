@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Publication Company Registration - MedPub Buddies</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    margin: 0;
+}
+
+header {
+    background: #1565c0;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1565c0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<header>
+<h1>Register Publication Company</h1>
+<p>Connect with researchers through MedPub Buddies</p>
+</header>
+
+
+<div class="container">
+
+<form id="companyForm">
+
+<input type="text" name="company_name" placeholder="Company / Publisher Name" required>
+
+<input type="email" name="email" placeholder="Email" required>
+
+<input type="url" name="website" placeholder="Website">
+
+<input type="text" name="field_of_interest" placeholder="Research Field">
+
+<textarea name="description" placeholder="Company Description"></textarea>
+
+<button type="submit">
+Register
+</button>
+
+</form>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+const form = document.getElementById("companyForm");
+
+
+form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+
+const data = new FormData(form);
+
+
+const { error } = await supabaseClient
+.from("publication_companies")
+.insert([
+{
+company_name: data.get("company_name"),
+email: data.get("email"),
+website: data.get("website"),
+field_of_interest: data.get("field_of_interest"),
+description: data.get("description")
+}
+]);
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Company registered successfully!");
+form.reset();
+
+}
+
+});
+
+</script>
+
+
+</body>
+</html>
