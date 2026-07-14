@@ -68,16 +68,50 @@ button:hover {
 }
 </style>
 </head>
-<!-- Supabase script here -->
+</form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-  // Your Supabase code
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co;
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2;
+
+const supabaseClient = supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
+
+const form = document.getElementById("submissionForm");
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  const { error } = await supabaseClient
+    .from("submissions")
+    .insert([
+      {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        title: formData.get("title"),
+        type: formData.get("type"),
+        message: formData.get("message")
+      }
+    ]);
+
+  if (error) {
+    alert("Error: " + error.message);
+  } else {
+    alert("Submitted successfully!");
+    form.reset();
+  }
+});
 </script>
 
 </body>
 </html>
-
-<body>
 
 <header>
     <h1>Submit Your Work</h1>
