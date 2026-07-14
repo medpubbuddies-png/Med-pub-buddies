@@ -85,7 +85,7 @@ button {
 <input type="text" name="company_id" placeholder="Publication Company ID" required>
 
 
-<input type="text" name="file_url" placeholder="Manuscript File URL">
+<input type="file" id="manuscriptFile" accept=".pdf">
 
 
 <button type="submit">
@@ -123,6 +123,82 @@ const form = document.getElementById("manuscriptForm");
 
 
 form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+
+const file = document.getElementById("manuscriptFile").files[0];
+
+if(!file){
+alert("Please select a PDF file");
+return;
+}
+
+
+const fileName = Date.now() + "_" + file.name;
+
+
+
+const { error: uploadError } = await supabaseClient
+.storage
+.from("manuscripts")
+.upload(fileName, file);
+
+
+
+if(uploadError){
+
+alert("Upload error: " + uploadError.message);
+return;
+
+}
+
+
+
+const { data: urlData } = supabaseClient
+.storage
+.from("manuscripts")
+.getPublicUrl(fileName);
+
+
+
+const fileUrl = urlData.publicUrl;
+
+
+
+const data = new FormData(form);
+
+
+
+const { error } = await supabaseClient
+.from("manuscripts")
+.insert([
+{
+researcher_email: data.get("researcher_email"),
+title: data.get("title"),
+abstract: data.get("abstract"),
+company_id: data.get("company_id"),
+file_url: fileUrl,
+status: "Submitted"
+}
+]);
+
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Manuscript submitted successfully!");
+
+form.reset();
+
+}
+
+
+});
 
 e.preventDefault();
 
