@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Researcher Registration - MedPub Buddies</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+}
+
+header {
+    background:#1565c0;
+    color:white;
+    padding:40px;
+    text-align:center;
+}
+
+.container {
+    max-width:600px;
+    margin:30px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+}
+
+input, textarea {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    background:#1565c0;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+<h1>Researcher Registration</h1>
+<p>Join MedPub Buddies</p>
+</header>
+
+
+<div class="container">
+
+
+<form id="researcherForm">
+
+
+<input type="text" name="full_name" placeholder="Full Name" required>
+
+
+<input type="email" name="email" placeholder="Email" required>
+
+
+<input type="text" name="institution" placeholder="Institution / University">
+
+
+<input type="text" name="field_of_research" placeholder="Field of Research">
+
+
+<textarea name="bio" placeholder="Short Bio"></textarea>
+
+
+<button type="submit">
+Register
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+const form = document.getElementById("researcherForm");
+
+
+
+form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+
+const data = new FormData(form);
+
+
+const { error } = await supabaseClient
+.from("researchers")
+.insert([
+{
+full_name: data.get("full_name"),
+email: data.get("email"),
+institution: data.get("institution"),
+field_of_research: data.get("field_of_research"),
+bio: data.get("bio")
+}
+]);
+
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Researcher registered successfully!");
+
+form.reset();
+
+}
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>
