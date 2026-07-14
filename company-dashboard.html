@@ -221,7 +221,17 @@ container.innerHTML += `
 <p><b>Abstract:</b> ${manuscript.abstract}</p>
 
 <p><b>Status:</b> ${manuscript.status}</p>
+<button onclick="updateManuscriptStatus('${manuscript.id}', 'Under Review')">
+Start Review
+</button>
 
+<button onclick="updateManuscriptStatus('${manuscript.id}', 'Accepted')">
+Accept Manuscript
+</button>
+
+<button onclick="updateManuscriptStatus('${manuscript.id}', 'Rejected')">
+Reject Manuscript
+</button>
 </div>
 
 `;
@@ -232,6 +242,28 @@ container.innerHTML += `
 }
 
 loadRequests();
+    async function updateManuscriptStatus(id, newStatus){
+
+const { error } = await supabaseClient
+.from("manuscripts")
+.update({
+status: newStatus
+})
+.eq("id", id);
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Manuscript updated!");
+loadManuscripts();
+
+}
+
+}
 loadManuscripts();
 
 
