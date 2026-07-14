@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Publication Companies - MedPub Buddies</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+}
+
+header {
+    background:#1565c0;
+    color:white;
+    padding:40px;
+    text-align:center;
+}
+
+.container {
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.card {
+    background:white;
+    padding:20px;
+    margin:15px 0;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+a {
+    color:#1565c0;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<header>
+<h1>Publication Companies</h1>
+<p>Discover publishing opportunities</p>
+</header>
+
+
+<div class="container" id="companies">
+
+<p>Loading companies...</p>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+async function loadCompanies(){
+
+const { data, error } = await supabaseClient
+.from("publication_companies")
+.select("*");
+
+
+const container = document.getElementById("companies");
+
+
+if(error){
+
+container.innerHTML = "Error loading companies: " + error.message;
+return;
+
+}
+
+
+container.innerHTML = "";
+
+
+data.forEach(company => {
+
+
+container.innerHTML += `
+
+<div class="card">
+
+<h2>${company.company_name}</h2>
+
+<p><b>Email:</b> ${company.email}</p>
+
+<p><b>Website:</b> 
+<a href="${company.website}" target="_blank">
+${company.website}
+</a>
+</p>
+
+<p><b>Research Field:</b> ${company.field_of_interest}</p>
+
+<p>${company.description}</p>
+
+</div>
+
+`;
+
+});
+
+
+}
+
+
+loadCompanies();
+
+</script>
+
+
+</body>
+</html>
