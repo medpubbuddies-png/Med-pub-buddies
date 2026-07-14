@@ -117,6 +117,9 @@ ${company.website}
 <p><b>Research Field:</b> ${company.field_of_interest}</p>
 
 <p>${company.description}</p>
+<button onclick="connectCompany('${company.id}')">
+Connect
+</button>
 
 </div>
 
@@ -126,7 +129,40 @@ ${company.website}
 
 
 }
+async function connectCompany(companyId){
 
+const researcherEmail = prompt("Enter your email:");
+
+const message = prompt("Write your message to the publication company:");
+
+if(!researcherEmail || !message){
+    return;
+}
+
+
+const { error } = await supabaseClient
+.from("connections")
+.insert([
+{
+researcher_email: researcherEmail,
+company_id: companyId,
+message: message,
+status: "Pending"
+}
+]);
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Connection request sent successfully!");
+
+}
+
+}
 
 loadCompanies();
 
