@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Manuscript - MedPub Buddies</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+}
+
+header {
+    background:#1565c0;
+    color:white;
+    padding:40px;
+    text-align:center;
+}
+
+.container {
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+form {
+    background:white;
+    padding:20px;
+    border-radius:10px;
+}
+
+input, textarea {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    background:#1565c0;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+<h1>Submit Manuscript</h1>
+<p>Connect your research with publication opportunities</p>
+</header>
+
+
+
+<div class="container">
+
+
+<form id="manuscriptForm">
+
+
+<input type="email" name="researcher_email" placeholder="Researcher Email" required>
+
+
+<input type="text" name="title" placeholder="Manuscript Title" required>
+
+
+<textarea name="abstract" placeholder="Abstract" required></textarea>
+
+
+<input type="text" name="company_id" placeholder="Publication Company ID" required>
+
+
+<input type="text" name="file_url" placeholder="Manuscript File URL">
+
+
+<button type="submit">
+Submit Manuscript
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+const form = document.getElementById("manuscriptForm");
+
+
+
+form.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+
+const data = new FormData(form);
+
+
+
+const { error } = await supabaseClient
+.from("manuscripts")
+.insert([
+{
+researcher_email: data.get("researcher_email"),
+title: data.get("title"),
+abstract: data.get("abstract"),
+company_id: data.get("company_id"),
+file_url: data.get("file_url"),
+status: "Submitted"
+}
+]);
+
+
+
+if(error){
+
+alert("Error: " + error.message);
+
+}else{
+
+alert("Manuscript submitted successfully!");
+
+form.reset();
+
+}
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>
