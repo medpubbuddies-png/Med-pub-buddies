@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Organizer - MedPub Buddies</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
+
+form{
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#1565c0;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<header>
+<h1>Conference Organizer Dashboard</h1>
+<p>Create abstract presentation opportunities</p>
+</header>
+
+
+<div class="container">
+
+<form id="conferenceForm">
+
+<input name="conference_name" placeholder="Conference Name" required>
+
+<input name="organization" placeholder="Organization Name" required>
+
+<textarea name="description" placeholder="Conference Description" required></textarea>
+
+<input name="deadline" type="date" required>
+
+<input name="presentation_type" placeholder="Oral / Poster Presentation" required>
+
+<input name="location" placeholder="Location" required>
+
+<input name="submission_link" placeholder="Abstract Submission Link" required>
+
+
+<button type="submit">
+Create Conference Opportunity
+</button>
+
+
+</form>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+
+const supabaseUrl="https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey="sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient=supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+const form=document.getElementById("conferenceForm");
+
+
+form.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+
+const data=new FormData(form);
+
+
+const {error}=await supabaseClient
+.from("conferences")
+.insert([{
+
+conference_name:data.get("conference_name"),
+organization:data.get("organization"),
+description:data.get("description"),
+deadline:data.get("deadline"),
+presentation_type:data.get("presentation_type"),
+location:data.get("location"),
+submission_link:data.get("submission_link")
+
+}]);
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}else{
+
+alert("Conference opportunity created!");
+
+form.reset();
+
+}
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>
