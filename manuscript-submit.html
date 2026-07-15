@@ -8,147 +8,122 @@
 <title>Submit Manuscript - MedPub Buddies</title>
 
 <style>
-
-body {
+body{
     margin:0;
     font-family:Arial,sans-serif;
     background:#eef2f7;
 }
 
-header {
+header{
     background:#1565c0;
     color:white;
     padding:40px;
     text-align:center;
 }
 
-.container {
+.container{
     max-width:700px;
     margin:auto;
     padding:20px;
 }
 
-form {
+form{
     background:white;
     padding:20px;
     border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-input, textarea {
+input, textarea{
     width:100%;
     padding:10px;
     margin:10px 0;
     border:1px solid #ccc;
-    border-radius:6px;
+    border-radius:5px;
+    box-sizing:border-box;
 }
 
-button {
+button{
     width:100%;
     padding:12px;
     background:#1565c0;
     color:white;
     border:none;
-    border-radius:6px;
+    border-radius:5px;
     cursor:pointer;
+    font-size:16px;
 }
 
+button:hover{
+    background:#0d47a1;
+}
 </style>
 
 </head>
 
-
 <body>
-
 
 <header>
 <h1>Submit Manuscript</h1>
-<p>Connect your research with publication opportunities</p>
+<p>Connect your research with publication companies</p>
 </header>
-
-
 
 <div class="container">
 
-
 <form id="manuscriptForm">
 
+<input
+type="email"
+name="researcher_email"
+placeholder="Researcher Email"
+required>
 
-<input type="email" name="researcher_email" placeholder="Researcher Email" required>
+<input
+type="text"
+name="title"
+placeholder="Manuscript Title"
+required>
 
+<textarea
+name="abstract"
+placeholder="Abstract"
+rows="6"
+required></textarea>
 
-<input type="text" name="title" placeholder="Manuscript Title" required>
-
-
-<textarea name="abstract" placeholder="Abstract" required></textarea>
-
-
-<input type="text" name="company_id" placeholder="Publication Company ID" required>
-
-
-<input type="file" id="manuscriptFile" accept=".pdf">
-
+<input
+type="text"
+name="company_id"
+placeholder="Publication Company ID"
+required>
 
 <button type="submit">
 Submit Manuscript
 </button>
 
-
 </form>
-
 
 </div>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 
 <script>
 
-
 const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
-
+const supabaseKey = "YOUR_SUPABASE_ANON_KEY";
 
 const supabaseClient = supabase.createClient(
 supabaseUrl,
 supabaseKey
 );
 
-
-
 const form = document.getElementById("manuscriptForm");
-
-
 
 form.addEventListener("submit", async function(e){
 
-
-
-
-
-if(error){
-
-alert("Error: " + error.message);
-
-}else{
-
-alert("Manuscript submitted successfully!");
-
-form.reset();
-
-}
-
-
-});
-
 e.preventDefault();
 
-
 const data = new FormData(form);
-
-
 
 const { error } = await supabaseClient
 .from("manuscripts")
@@ -158,12 +133,9 @@ researcher_email: data.get("researcher_email"),
 title: data.get("title"),
 abstract: data.get("abstract"),
 company_id: data.get("company_id"),
-file_url: data.get("file_url"),
 status: "Submitted"
 }
 ]);
-
-
 
 if(error){
 
@@ -177,12 +149,9 @@ form.reset();
 
 }
 
-
 });
 
-
 </script>
-
 
 </body>
 </html>
