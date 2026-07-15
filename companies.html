@@ -104,7 +104,10 @@ container.innerHTML += `
 
 <div class="card">
 
-<h2>${company.company_name}</h2>
+<h2>
+${company.name}
+${company.verified ? " ✅ Verified" : ""}
+</h2>
 
 <p><b>Email:</b> ${company.email}</p>
 
