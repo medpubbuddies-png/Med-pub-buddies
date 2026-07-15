@@ -105,8 +105,10 @@ container.innerHTML += `
 
 <div class="card">
 
-<h2>${conf.conference_name}</h2>
-
+<h2>
+${conf.conference_name}
+${conf.verified ? " ✅ Verified" : ""}
+</h2>
 <p><b>Organization:</b> ${conf.organization}</p>
 
 <p>${conf.description}</p>
