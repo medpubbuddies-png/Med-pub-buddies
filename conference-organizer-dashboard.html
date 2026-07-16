@@ -41,6 +41,7 @@ input,textarea{
 width:100%;
 padding:10px;
 margin:10px 0;
+box-sizing:border-box;
 }
 
 button{
@@ -74,9 +75,7 @@ background:#c62828;
 </header>
 
 
-
 <div class="container">
-
 
 
 <div class="card">
@@ -113,10 +112,7 @@ Create Conference
 
 
 
-
-
 <div class="card">
-
 
 <h2>My Conferences</h2>
 
@@ -137,10 +133,7 @@ View My Conferences
 </div>
 
 
-
 </div>
-
-
 
 
 
@@ -166,15 +159,11 @@ supabaseKey
 
 
 
-
-
 async function createConference(){
 
 
 const {error}=await supabaseClient
-
 .from("conferences")
-
 .insert([{
 
 conference_name:
@@ -214,13 +203,11 @@ else{
 
 alert("Conference submitted for verification!");
 
-loadConferences();
-
 }
 
 
-}
 
+}
 
 
 
@@ -234,11 +221,8 @@ document.getElementById("searchOrganization").value;
 
 
 const {data,error}=await supabaseClient
-
 .from("conferences")
-
 .select("*")
-
 .eq("organization",organization);
 
 
@@ -282,26 +266,19 @@ container.innerHTML += `
 
 <div class="card">
 
-
 <h3>${conf.conference_name}</h3>
-
 
 <p><b>Description:</b> ${conf.description}</p>
 
-
 <p><b>Location:</b> ${conf.location}</p>
-
 
 <p><b>Deadline:</b> ${conf.deadline}</p>
 
-
 <p><b>Presentation:</b> ${conf.presentation_type}</p>
-
 
 <p><b>Status:</b> 
 ${conf.verified ? "Verified ✅" : "Pending Verification"}
 </p>
-
 
 
 <button class="delete"
@@ -315,14 +292,10 @@ Delete
 
 `;
 
-
 });
 
 
 }
-
-
-
 
 
 
@@ -334,19 +307,14 @@ const confirmDelete =
 confirm("Delete this conference?");
 
 
-
 if(!confirmDelete){
 return;
 }
 
 
-
 const {error}=await supabaseClient
-
 .from("conferences")
-
 .delete()
-
 .eq("id",id);
 
 
