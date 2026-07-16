@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Organizer Registration</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input, textarea{
+
+width:100%;
+padding:10px;
+margin:10px 0;
+
+}
+
+button{
+
+background:#1565c0;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:5px;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Conference Organizer Registration</h1>
+
+<p>Create your organizer profile</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<input id="organization_name" placeholder="Organization name">
+
+
+<input id="organizer_name" placeholder="Organizer name">
+
+
+<input id="email" placeholder="Email">
+
+
+<input id="website" placeholder="Website">
+
+
+<input id="country" placeholder="Country">
+
+
+<textarea id="description" placeholder="Organization description"></textarea>
+
+
+<button onclick="registerOrganizer()">
+Register
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function registerOrganizer(){
+
+
+const {error}=await supabaseClient
+
+.from("conference_organizers")
+
+.insert([{
+
+organization_name:
+document.getElementById("organization_name").value,
+
+organizer_name:
+document.getElementById("organizer_name").value,
+
+email:
+document.getElementById("email").value,
+
+website:
+document.getElementById("website").value,
+
+country:
+document.getElementById("country").value,
+
+description:
+document.getElementById("description").value,
+
+verified:false
+
+}]);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Registration successful! Waiting for verification.");
+
+}
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
