@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Researcher Conference Dashboard</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+}
+
+header{
+    background:#1565c0;
+    color:white;
+    text-align:center;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin:15px 0;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input,button{
+
+padding:10px;
+margin:10px;
+
+}
+
+button{
+
+background:#1565c0;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Researcher Conference Dashboard</h1>
+
+<p>Track your abstract submissions</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+<input id="email" placeholder="Enter your email">
+
+<button onclick="loadAbstracts()">
+View My Abstracts
+</button>
+
+</div>
+
+
+
+<div id="results">
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function loadAbstracts(){
+
+
+const email = document.getElementById("email").value;
+
+
+const {data,error} = await supabaseClient
+
+.from("conference_abstracts")
+
+.select("*")
+
+.eq("researcher_email",email);
+
+
+
+const container=document.getElementById("results");
+
+
+
+if(error){
+
+container.innerHTML="Error: "+error.message;
+
+return;
+
+}
+
+
+
+if(data.length===0){
+
+container.innerHTML="<p>No abstracts found.</p>";
+
+return;
+
+}
+
+
+
+container.innerHTML="";
+
+
+
+data.forEach(abstract=>{
+
+
+container.innerHTML += `
+
+
+<div class="card">
+
+
+<h3>${abstract.title}</h3>
+
+
+<p><b>Conference:</b> ${abstract.conference_name}</p>
+
+
+<p><b>Presentation:</b> ${abstract.presentation_type}</p>
+
+
+<p><b>Status:</b> ${abstract.status}</p>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
