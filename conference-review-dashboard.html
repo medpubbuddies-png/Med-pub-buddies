@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Review Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+button{
+background:#1565c0;
+color:white;
+border:none;
+padding:10px 15px;
+margin:5px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.reject{
+background:#c62828;
+}
+
+select,input{
+padding:10px;
+width:100%;
+margin:10px 0;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Conference Review Dashboard</h1>
+
+<p>Review researcher abstracts</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+<h2>Find Conference Submissions</h2>
+
+
+<input id="conferenceName" placeholder="Enter conference name">
+
+
+<button onclick="loadSubmissions()">
+View Submissions
+</button>
+
+
+</div>
+
+
+<div id="submissions"></div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+
+
+async function loadSubmissions(){
+
+
+const name =
+document.getElementById("conferenceName").value;
+
+
+
+const {data,error}=await supabaseClient
+
+.from("conference_submissions")
+
+.select("*")
+
+.eq("conference_name",name);
+
+
+
+const container =
+document.getElementById("submissions");
+
+
+
+if(error){
+
+container.innerHTML =
+"Error: "+error.message;
+
+return;
+
+}
+
+
+
+if(data.length===0){
+
+container.innerHTML =
+"<p>No submissions found.</p>";
+
+return;
+
+}
+
+
+
+container.innerHTML="";
+
+
+
+data.forEach(sub=>{
+
+
+container.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>${sub.title}</h2>
+
+
+<p><b>Researcher:</b> ${sub.researcher_name}</p>
+
+
+<p><b>Email:</b> ${sub.researcher_email}</p>
+
+
+<p><b>Abstract:</b> ${sub.abstract}</p>
+
+
+<p><b>Presentation:</b> ${sub.presentation_type}</p>
+
+
+<p><b>Status:</b> ${sub.status}</p>
+
+
+
+<button onclick="updateStatus('${sub.id}','Under Review')">
+Start Review
+</button>
+
+
+<button onclick="updateStatus('${sub.id}','Accepted')">
+Accept
+</button>
+
+
+<button class="reject"
+onclick="updateStatus('${sub.id}','Rejected')">
+Reject
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+
+async function updateStatus(id,status){
+
+
+const {error}=await supabaseClient
+
+.from("conference_submissions")
+
+.update({
+status:status
+})
+
+.eq("id",id);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Status updated!");
+
+loadSubmissions();
+
+}
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
