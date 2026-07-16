@@ -236,6 +236,66 @@ Reject
 async function updateStatus(id,status){
 
 
+let message = "";
+
+
+if(status === "Under Review"){
+
+message = "Your abstract is now under review.";
+
+}
+
+
+if(status === "Accepted"){
+
+message = "Congratulations! Your abstract has been accepted.";
+
+}
+
+
+if(status === "Rejected"){
+
+message = "Your abstract was not accepted.";
+
+}
+
+
+
+
+const {error}=await supabaseClient
+
+.from("conference_submissions")
+
+.update({
+
+status: status,
+
+notification: message
+
+})
+
+.eq("id",id);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Status updated!");
+
+loadSubmissions();
+
+}
+
+
+}
+
+
 const {error}=await supabaseClient
 
 .from("conference_submissions")
