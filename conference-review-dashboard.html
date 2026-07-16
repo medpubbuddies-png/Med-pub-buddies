@@ -296,35 +296,6 @@ loadSubmissions();
 }
 
 
-const {error}=await supabaseClient
-
-.from("conference_submissions")
-
-.update({
-status:status
-})
-
-.eq("id",id);
-
-
-
-if(error){
-
-alert("Error: "+error.message);
-
-}
-
-else{
-
-alert("Status updated!");
-
-loadSubmissions();
-
-}
-
-
-}
-
 
 
 </script>
