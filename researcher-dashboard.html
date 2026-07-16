@@ -165,62 +165,9 @@ container.innerHTML += `
 
 
 }
-
-async function  <button onclick="loadRequests(); loadManuscripts();">
+<button onclick="loadRequests(); loadManuscripts();">
 View Requests
-</button>(){
-
-const email = document.getElementById("email").value;
-
-
-const { data, error } = await supabaseClient
-.from("manuscripts")
-.select("*")
-.eq("researcher_email", email);
-
-
-const container = document.getElementById("manuscripts");
-
-
-if(error){
-
-container.innerHTML = "Error: " + error.message;
-return;
-
-}
-
-
-if(data.length === 0){
-
-container.innerHTML = "<p>No manuscripts found.</p>";
-return;
-
-}
-
-
-container.innerHTML = "";
-
-
-data.forEach(manuscript => {
-
-
-container.innerHTML += `
-
-<div class="card">
-
-<h3>${manuscript.title}</h3>
-
-<p><b>Abstract:</b> ${manuscript.abstract}</p>
-
-<p><b>Status:</b> ${manuscript.status}</p>
-
-</div>
-
-`;
-
-});
-
-
+</button>
 }
 
 </script>
