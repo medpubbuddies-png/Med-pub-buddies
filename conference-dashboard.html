@@ -93,6 +93,8 @@ const { data, error } = await supabaseClient
 .from("conference_abstracts")
 .select("*");
 
+console.log(data);
+console.log(error);
 
 const container = document.getElementById("abstracts");
 
