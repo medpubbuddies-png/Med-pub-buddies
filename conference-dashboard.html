@@ -54,10 +54,11 @@ button{
 </header>
 
 <div class="container">
-
 <div class="card">
 <h2>Submitted Abstracts</h2>
-<p>Abstract submissions will appear here.</p>
+<div id="abstracts">
+<p>Loading abstracts...</p>
+</div>
 </div>
 
 <div class="card">
@@ -74,6 +75,73 @@ button{
 </div>
 
 </div>
+<script>
 
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+const supabaseClient = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+async function loadAbstracts(){
+
+const { data, error } = await supabaseClient
+.from("conference_abstracts")
+.select("*");
+
+
+const container = document.getElementById("abstracts");
+
+
+if(error){
+container.innerHTML = "Error: " + error.message;
+return;
+}
+
+
+if(data.length === 0){
+container.innerHTML = "<p>No abstracts submitted yet.</p>";
+return;
+}
+
+
+container.innerHTML = "";
+
+
+data.forEach(abstract => {
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>${abstract.title}</h3>
+
+<p><b>Researcher:</b> ${abstract.researcher_email}</p>
+
+<p><b>Abstract:</b> ${abstract.abstract}</p>
+
+<p><b>Presentation:</b> ${abstract.presentation_type}</p>
+
+<p><b>Status:</b> ${abstract.status}</p>
+
+<button>Accept</button>
+<button>Reject</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+loadAbstracts();
+
+</script>
 </body>
 </html>
