@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Conference Organizer Dashboard</title>
 
 <style>
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -42,45 +45,81 @@ button{
     border-radius:5px;
     cursor:pointer;
 }
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <header>
 <h1>Conference Organizer Dashboard</h1>
 <p>Manage conference abstract submissions</p>
 </header>
 
+
+
 <div class="container">
+
+
 <div class="card">
+
 <h2>Submitted Abstracts</h2>
+
 <div id="abstracts">
 <p>Loading abstracts...</p>
 </div>
+
 </div>
 
+
+
 <div class="card">
+
 <h2>Accepted Abstracts</h2>
-<p>Accepted abstracts will appear here.</p>
+
+<div id="accepted">
+<p>No accepted abstracts yet.</p>
 </div>
+
+</div>
+
+
+
 
 <div class="card">
+
 <h2>Conference Statistics</h2>
-<p>Total Submitted: 0</p>
-<p>Under Review: 0</p>
-<p>Accepted: 0</p>
-<p>Rejected: 0</p>
-</div>
+
+<p id="total">Total Submitted: 0</p>
+
+<p id="review">Under Review: 0</p>
+
+<p id="acceptedCount">Accepted: 0</p>
+
+<p id="rejected">Rejected: 0</p>
 
 </div>
+
+
+
+</div>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
 <script>
+
 
 const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
+
 const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
 
 const supabaseClient = supabase.createClient(
 supabaseUrl,
@@ -88,79 +127,182 @@ supabaseKey
 );
 
 
+
 async function loadAbstracts(){
+
 
 const { data, error } = await supabaseClient
 .from("conference_abstracts")
 .select("*");
 
-console.log(data);
-console.log(error);
+
 
 const container = document.getElementById("abstracts");
 
 
+
 if(error){
+
 container.innerHTML = "Error: " + error.message;
 return;
+
 }
+
 
 
 if(data.length === 0){
+
 container.innerHTML = "<p>No abstracts submitted yet.</p>";
+
 return;
+
 }
+
 
 
 container.innerHTML = "";
 
 
+
 data.forEach(abstract => {
 
+
 container.innerHTML += `
+
 
 <div class="card">
 
 <h3>${abstract.title}</h3>
 
+
 <p><b>Researcher:</b> ${abstract.researcher_email}</p>
+
 
 <p><b>Abstract:</b> ${abstract.abstract}</p>
 
+
 <p><b>Presentation:</b> ${abstract.presentation_type}</p>
 
+
 <p><b>Status:</b> ${abstract.status}</p>
+
 
 <button onclick="updateStatus('${abstract.id}','Accepted')">
 Accept
 </button>
 
+
 <button onclick="updateStatus('${abstract.id}','Rejected')">
 Reject
 </button>
+
+
 </div>
+
 
 `;
 
+
 });
+
+
+
+
+// Statistics
+
+
+document.getElementById("total").innerHTML =
+"Total Submitted: " + data.length;
+
+
+document.getElementById("review").innerHTML =
+"Under Review: " + 
+data.filter(a => a.status.trim() === "Under Review").length;
+
+
+document.getElementById("acceptedCount").innerHTML =
+"Accepted: " + 
+data.filter(a => a.status.trim() === "Accepted").length;
+
+
+document.getElementById("rejected").innerHTML =
+"Rejected: " + 
+data.filter(a => a.status.trim() === "Rejected").length;
+
+
+
+// Accepted abstracts
+
+
+const acceptedBox = document.getElementById("accepted");
+
+
+const accepted = data.filter(
+a => a.status.trim() === "Accepted"
+);
+
+
+
+if(accepted.length > 0){
+
+
+acceptedBox.innerHTML = "";
+
+
+accepted.forEach(a => {
+
+
+acceptedBox.innerHTML += `
+
+
+<div class="card">
+
+<h3>${a.title}</h3>
+
+<p>${a.abstract}</p>
+
+<p><b>Researcher:</b> ${a.researcher_email}</p>
+
+</div>
+
+
+`;
+
+
+});
+
 
 }
 
 
-loadAbstracts();
-async function updateStatus(id, status){
+
+}
+
+
+
+
+async function updateStatus(id,status){
+
 
 const { error } = await supabaseClient
+
 .from("conference_abstracts")
-.update({status: status})
-.eq("id", id);
+
+.update({
+status:status
+})
+
+.eq("id",id);
+
 
 
 if(error){
 
 alert("Error: " + error.message);
 
-}else{
+}
+
+else{
 
 alert("Status updated!");
 
@@ -168,7 +310,18 @@ loadAbstracts();
 
 }
 
+
+
 }
+
+
+
+loadAbstracts();
+
+
 </script>
+
+
 </body>
+
 </html>
