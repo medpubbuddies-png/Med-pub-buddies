@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Organizer Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input, textarea, select{
+
+width:100%;
+padding:10px;
+margin:10px 0;
+
+}
+
+button{
+
+background:#1565c0;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:5px;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Conference Organizer Dashboard</h1>
+
+<p>Create conference opportunities</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<h2>Create Conference</h2>
+
+
+<input id="conference_name" placeholder="Conference name">
+
+
+<input id="organization" placeholder="Organization">
+
+
+<textarea id="description" placeholder="Description"></textarea>
+
+
+<input id="deadline" placeholder="Submission deadline (YYYY-MM-DD)">
+
+
+<input id="presentation_type" placeholder="Presentation type (Oral/Poster)">
+
+
+
+<input id="location" placeholder="Location">
+
+
+
+<input id="submission_link" placeholder="Submission link">
+
+
+
+<button onclick="createConference()">
+Create Conference
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function createConference(){
+
+
+const {error}=await supabaseClient
+
+.from("conferences")
+
+.insert([{
+
+conference_name:
+document.getElementById("conference_name").value,
+
+
+organization:
+document.getElementById("organization").value,
+
+
+description:
+document.getElementById("description").value,
+
+
+deadline:
+document.getElementById("deadline").value,
+
+
+presentation_type:
+document.getElementById("presentation_type").value,
+
+
+location:
+document.getElementById("location").value,
+
+
+submission_link:
+document.getElementById("submission_link").value,
+
+
+verified:false
+
+
+}]);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Conference submitted for verification!");
+
+}
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
