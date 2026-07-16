@@ -82,6 +82,9 @@ const { data, error } = await supabaseClient
 .from("publication_companies")
 .select("*");
 
+console.log(data);
+console.log(error);
+
 
 const container = document.getElementById("companies");
 
