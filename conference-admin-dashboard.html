@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Admin Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 15px;
+margin:5px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+color:white;
+background:#1565c0;
+}
+
+.reject{
+background:#c62828;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Conference Admin Dashboard</h1>
+
+<p>Review and verify conference submissions</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+<h2>Submitted Conferences</h2>
+
+<div id="conferences">
+Loading conferences...
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function loadConferences(){
+
+
+const {data,error}=await supabaseClient
+
+.from("conferences")
+
+.select("*")
+
+.order("deadline",{ascending:true});
+
+
+
+const container =
+document.getElementById("conferences");
+
+
+
+if(error){
+
+container.innerHTML =
+"Error: "+error.message;
+
+return;
+
+}
+
+
+
+if(data.length===0){
+
+container.innerHTML =
+"No conferences found.";
+
+return;
+
+}
+
+
+
+container.innerHTML="";
+
+
+
+data.forEach(conf=>{
+
+
+container.innerHTML += `
+
+
+<div class="card">
+
+<h2>${conf.conference_name}</h2>
+
+
+<p><b>Organization:</b> ${conf.organization}</p>
+
+
+<p><b>Description:</b> ${conf.description}</p>
+
+
+<p><b>Location:</b> ${conf.location}</p>
+
+
+<p><b>Deadline:</b> ${conf.deadline}</p>
+
+
+<p><b>Presentation:</b> ${conf.presentation_type}</p>
+
+
+<p><b>Status:</b> 
+${conf.verified ? "Verified ✅" : "Pending ⏳"}
+</p>
+
+
+<button onclick="verifyConference('${conf.id}')">
+Approve
+</button>
+
+
+<button class="reject"
+onclick="deleteConference('${conf.id}')">
+Reject
+</button>
+
+
+</div>
+
+
+`;
+
+});
+
+
+}
+
+
+
+
+
+async function verifyConference(id){
+
+
+const {error}=await supabaseClient
+
+.from("conferences")
+
+.update({
+verified:true
+})
+
+.eq("id",id);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Conference approved!");
+
+loadConferences();
+
+}
+
+
+}
+
+
+
+
+
+async function deleteConference(id){
+
+
+const confirmDelete =
+confirm("Reject this conference?");
+
+
+if(!confirmDelete){
+return;
+}
+
+
+
+const {error}=await supabaseClient
+
+.from("conferences")
+
+.delete()
+
+.eq("id",id);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Conference rejected");
+
+loadConferences();
+
+}
+
+
+}
+
+
+
+loadConferences();
+
+
+</script>
+
+
+</body>
+
+</html>
