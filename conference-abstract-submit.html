@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conference Abstract Submission</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+}
+
+header{
+background:#1565c0;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input,textarea,select{
+width:100%;
+padding:10px;
+margin:10px 0;
+box-sizing:border-box;
+}
+
+button{
+background:#1565c0;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Conference Abstract Submission</h1>
+
+<p>Submit your research abstract</p>
+
+</header>
+
+
+
+<div class="container">
+
+<div class="card">
+
+
+<input id="conference_id" placeholder="Conference ID">
+
+<input id="conference_name" placeholder="Conference Name">
+
+
+<input id="researcher_name" placeholder="Your Name">
+
+
+<input id="researcher_email" placeholder="Your Email">
+
+
+<input id="title" placeholder="Abstract Title">
+
+
+<textarea id="abstract" placeholder="Abstract"></textarea>
+
+
+<select id="presentation_type">
+
+<option>Oral</option>
+
+<option>Poster</option>
+
+</select>
+
+
+<button onclick="submitAbstract()">
+Submit Abstract
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function submitAbstract(){
+
+
+const {error}=await supabaseClient
+
+.from("conference_submissions")
+
+.insert([{
+
+conference_id:
+document.getElementById("conference_id").value,
+
+conference_name:
+document.getElementById("conference_name").value,
+
+researcher_name:
+document.getElementById("researcher_name").value,
+
+researcher_email:
+document.getElementById("researcher_email").value,
+
+title:
+document.getElementById("title").value,
+
+abstract:
+document.getElementById("abstract").value,
+
+presentation_type:
+document.getElementById("presentation_type").value,
+
+status:"Submitted"
+
+}]);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Abstract submitted successfully!");
+
+}
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
