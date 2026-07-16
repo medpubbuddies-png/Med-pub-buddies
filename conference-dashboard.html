@@ -117,7 +117,6 @@ button{
 
 const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-
 const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
 
 
@@ -150,7 +149,7 @@ return;
 
 
 
-if(data.length === 0){
+if(!data || data.length === 0){
 
 container.innerHTML = "<p>No abstracts submitted yet.</p>";
 
@@ -207,43 +206,45 @@ Reject
 
 
 
-
 // Statistics
-
 
 document.getElementById("total").innerHTML =
 "Total Submitted: " + data.length;
 
 
 document.getElementById("review").innerHTML =
-"Under Review: " + 
-data.filter(a => a.status.trim() === "Under Review").length;
+"Under Review: " +
+data.filter(a => a.status && a.status.trim().toLowerCase() === "under review").length;
 
 
 document.getElementById("acceptedCount").innerHTML =
-"Accepted: " + 
-data.filter(a => a.status.trim() === "Accepted").length;
+"Accepted: " +
+data.filter(a => a.status && a.status.trim().toLowerCase() === "accepted").length;
 
 
 document.getElementById("rejected").innerHTML =
-"Rejected: " + 
-data.filter(a => a.status.trim() === "Rejected").length;
+"Rejected: " +
+data.filter(a => a.status && a.status.trim().toLowerCase() === "rejected").length;
 
 
 
 // Accepted abstracts
 
-
 const acceptedBox = document.getElementById("accepted");
 
 
 const accepted = data.filter(
-a => a.status.trim() === "Accepted"
+a => a.status && a.status.trim().toLowerCase() === "accepted"
 );
 
 
 
-if(accepted.length > 0){
+if(accepted.length === 0){
+
+acceptedBox.innerHTML = "<p>No accepted abstracts yet.</p>";
+
+}
+else{
 
 
 acceptedBox.innerHTML = "";
@@ -259,9 +260,11 @@ acceptedBox.innerHTML += `
 
 <h3>${a.title}</h3>
 
-<p>${a.abstract}</p>
+<p><b>Abstract:</b> ${a.abstract}</p>
 
 <p><b>Researcher:</b> ${a.researcher_email}</p>
+
+<p><b>Presentation:</b> ${a.presentation_type}</p>
 
 </div>
 
@@ -273,7 +276,6 @@ acceptedBox.innerHTML += `
 
 
 }
-
 
 
 }
@@ -289,10 +291,10 @@ const { error } = await supabaseClient
 .from("conference_abstracts")
 
 .update({
-status:status
+status: status
 })
 
-.eq("id",id);
+.eq("id", id);
 
 
 
@@ -306,7 +308,12 @@ else{
 
 alert("Status updated!");
 
+setTimeout(function(){
+
 loadAbstracts();
+
+},1000);
+
 
 }
 
@@ -325,3 +332,6 @@ loadAbstracts();
 </body>
 
 </html>
+
+
+
