@@ -93,8 +93,34 @@ Create Conference Opportunity
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
+  <script>
+const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+const supabaseKey = "YOUR_SUPABASE_ANON_KEY";
+
+const supabaseClient = supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+);
+
+async function loadAbstracts() {
+
+    const { data, error } = await supabaseClient
+        .from("conference_abstracts")
+        .select("*");
+
+    console.log(data);
+
+    if (error) {
+        console.log(error);
+    }
+}
+
+loadAbstracts();
+</script>
 
 const supabaseUrl="https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
