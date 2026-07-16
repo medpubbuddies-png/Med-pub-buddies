@@ -72,9 +72,10 @@ supabaseKey
 
 async function loadConferences(){
 
-const {data,error}= await supabaseClient
+const { data, error } = await supabaseClient
 .from("conferences")
-.select("*");
+.select("*")
+.order("deadline", { ascending: true });
 
 
 const container=document.getElementById("conferences");
@@ -119,9 +120,15 @@ ${conf.verified ? " ✅ Verified" : ""}
 
 <p><b>Deadline:</b> ${conf.deadline}</p>
 
-<a href="${conf.submission_link}">
+${
+conf.submission_link
+? `<a href="${conf.submission_link}" target="_blank">
+<button style="padding:10px 15px;background:#1565c0;color:white;border:none;border-radius:5px;cursor:pointer;">
 Submit Abstract
-</a>
+</button>
+</a>`
+: "<p><i>Submission link not available.</i></p>"
+}
 
 </div>
 
