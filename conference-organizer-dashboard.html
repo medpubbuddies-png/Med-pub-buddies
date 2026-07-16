@@ -24,7 +24,7 @@ text-align:center;
 }
 
 .container{
-max-width:800px;
+max-width:900px;
 margin:auto;
 padding:20px;
 }
@@ -37,23 +37,24 @@ border-radius:10px;
 box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-input, textarea, select{
-
+input,textarea{
 width:100%;
 padding:10px;
 margin:10px 0;
-
 }
 
 button{
-
 background:#1565c0;
 color:white;
 border:none;
-padding:12px 20px;
+padding:10px 15px;
 border-radius:5px;
 cursor:pointer;
+margin:5px;
+}
 
+.delete{
+background:#c62828;
 }
 
 </style>
@@ -68,7 +69,7 @@ cursor:pointer;
 
 <h1>Conference Organizer Dashboard</h1>
 
-<p>Create conference opportunities</p>
+<p>Create and manage conference opportunities</p>
 
 </header>
 
@@ -77,14 +78,13 @@ cursor:pointer;
 <div class="container">
 
 
-<div class="card">
 
+<div class="card">
 
 <h2>Create Conference</h2>
 
 
 <input id="conference_name" placeholder="Conference name">
-
 
 <input id="organization" placeholder="Organization">
 
@@ -92,19 +92,16 @@ cursor:pointer;
 <textarea id="description" placeholder="Description"></textarea>
 
 
-<input id="deadline" placeholder="Submission deadline (YYYY-MM-DD)">
+<input id="deadline" placeholder="Deadline YYYY-MM-DD">
 
 
-<input id="presentation_type" placeholder="Presentation type (Oral/Poster)">
-
+<input id="presentation_type" placeholder="Presentation type">
 
 
 <input id="location" placeholder="Location">
 
 
-
 <input id="submission_link" placeholder="Submission link">
-
 
 
 <button onclick="createConference()">
@@ -112,11 +109,38 @@ Create Conference
 </button>
 
 
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>My Conferences</h2>
+
+
+<input id="searchOrganization" placeholder="Enter organization name">
+
+
+<button onclick="loadConferences()">
+View My Conferences
+</button>
+
+
+<div id="myConferences">
 
 </div>
 
 
 </div>
+
+
+
+</div>
+
+
 
 
 
@@ -142,6 +166,8 @@ supabaseKey
 
 
 
+
+
 async function createConference(){
 
 
@@ -154,33 +180,25 @@ const {error}=await supabaseClient
 conference_name:
 document.getElementById("conference_name").value,
 
-
 organization:
 document.getElementById("organization").value,
-
 
 description:
 document.getElementById("description").value,
 
-
 deadline:
 document.getElementById("deadline").value,
-
 
 presentation_type:
 document.getElementById("presentation_type").value,
 
-
 location:
 document.getElementById("location").value,
-
 
 submission_link:
 document.getElementById("submission_link").value,
 
-
 verified:false
-
 
 }]);
 
@@ -196,11 +214,160 @@ else{
 
 alert("Conference submitted for verification!");
 
+loadConferences();
+
+}
+
+
 }
 
 
 
+
+
+async function loadConferences(){
+
+
+const organization =
+document.getElementById("searchOrganization").value;
+
+
+
+const {data,error}=await supabaseClient
+
+.from("conferences")
+
+.select("*")
+
+.eq("organization",organization);
+
+
+
+const container =
+document.getElementById("myConferences");
+
+
+
+if(error){
+
+container.innerHTML =
+"Error: "+error.message;
+
+return;
+
 }
+
+
+
+if(data.length===0){
+
+container.innerHTML =
+"<p>No conferences found.</p>";
+
+return;
+
+}
+
+
+
+container.innerHTML="";
+
+
+
+data.forEach(conf=>{
+
+
+container.innerHTML += `
+
+
+<div class="card">
+
+
+<h3>${conf.conference_name}</h3>
+
+
+<p><b>Description:</b> ${conf.description}</p>
+
+
+<p><b>Location:</b> ${conf.location}</p>
+
+
+<p><b>Deadline:</b> ${conf.deadline}</p>
+
+
+<p><b>Presentation:</b> ${conf.presentation_type}</p>
+
+
+<p><b>Status:</b> 
+${conf.verified ? "Verified ✅" : "Pending Verification"}
+</p>
+
+
+
+<button class="delete"
+onclick="deleteConference('${conf.id}')">
+Delete
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+async function deleteConference(id){
+
+
+const confirmDelete =
+confirm("Delete this conference?");
+
+
+
+if(!confirmDelete){
+return;
+}
+
+
+
+const {error}=await supabaseClient
+
+.from("conferences")
+
+.delete()
+
+.eq("id",id);
+
+
+
+if(error){
+
+alert("Error: "+error.message);
+
+}
+
+else{
+
+alert("Conference deleted");
+
+loadConferences();
+
+}
+
+
+}
+
 
 
 </script>
