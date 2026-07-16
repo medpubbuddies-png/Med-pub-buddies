@@ -70,32 +70,30 @@ button {
 
 <input id="email" placeholder="Enter your email">
 
-<button onclick="loadRequests()">
+<br>
+
+<button onclick="loadRequests(); loadManuscripts();">
 View Requests
 </button>
 
 
-
 <h2>Connection Requests</h2>
 
-<div id="requests">
-</div>
+<div id="requests"></div>
 
 
 <h2>My Manuscripts</h2>
 
-<div id="manuscripts">
-</div>
+<div id="manuscripts"></div>
+
 
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 
 <script>
-
 
 const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
@@ -111,7 +109,6 @@ supabaseKey
 
 async function loadRequests(){
 
-
 const email = document.getElementById("email").value;
 
 
@@ -119,7 +116,6 @@ const { data, error } = await supabaseClient
 .from("connections")
 .select("*")
 .eq("researcher_email", email);
-
 
 
 const container = document.getElementById("requests");
@@ -165,10 +161,65 @@ container.innerHTML += `
 
 
 }
-<button onclick="loadRequests(); loadManuscripts();">
-View Requests
-</button>
+
+
+
+async function loadManuscripts(){
+
+const email = document.getElementById("email").value;
+
+
+const { data, error } = await supabaseClient
+.from("manuscripts")
+.select("*")
+.eq("researcher_email", email);
+
+
+
+const container = document.getElementById("manuscripts");
+
+
+if(error){
+
+container.innerHTML = "Error: " + error.message;
+return;
+
 }
+
+
+if(data.length === 0){
+
+container.innerHTML = "<p>No manuscripts found.</p>";
+return;
+
+}
+
+
+container.innerHTML = "";
+
+
+data.forEach(manuscript => {
+
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>${manuscript.title}</h3>
+
+<p><b>Abstract:</b> ${manuscript.abstract}</p>
+
+<p><b>Status:</b> ${manuscript.status}</p>
+
+</div>
+
+`;
+
+});
+
+
+}
+
 
 </script>
 
