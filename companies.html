@@ -105,7 +105,7 @@ container.innerHTML += `
 <div class="card">
 
 <h2>
-${company.company_name"]}
+${company.company_name}
 ${company.verified ? " ✅ Verified" : ""}
 </h2>
 <p><b>Email:</b> ${company.email}</p>
@@ -116,7 +116,7 @@ ${company.website}
 </a>
 </p>
 
-<p><b>Research Field:</b> ${company["field of interest"]}</p>
+<p><b>Research Field:</b> ${company.field_of_interest}</p>
 
 <p>${company.description}</p>
 <button onclick="connectCompany('${company.id}')">
