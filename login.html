@@ -110,6 +110,9 @@ const password =
 document.getElementById("password").value;
 
 
+alert("Trying signup: " + email);
+
+
 const {data,error}=await client.auth.signUp({
 
 email: email,
@@ -121,44 +124,15 @@ password: password
 
 if(error){
 
-document.getElementById("message").innerHTML =
-error.message;
+alert("Signup error: " + error.message);
 
 return;
 
 }
 
 
-// Create profile
+alert("Auth success: " + data.user.email);
 
-const {error:profileError}=await client
-
-.from("profiles")
-
-.insert({
-
-id:data.user.id,
-
-email:email,
-
-role:"researcher"
-
-});
-
-
-if(profileError){
-
-document.getElementById("message").innerHTML =
-profileError.message;
-
-}
-
-else{
-
-document.getElementById("message").innerHTML =
-"Account created successfully!";
-
-}
 
 }
 async function signIn(){
