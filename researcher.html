@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Researcher Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef2f7;
+margin:0;
+}
+
+.container{
+max-width:800px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+h1{
+color:#1565c0;
+}
+
+.card{
+border:1px solid #ddd;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+
+button{
+background:#1565c0;
+color:white;
+border:none;
+padding:10px;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Researcher Dashboard</h1>
+
+<p>Welcome researcher</p>
+
+
+<h2>My Abstract Submissions</h2>
+
+<div id="submissions">
+
+Loading...
+
+</div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+
+
+const client = window.supabase.createClient(
+
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+
+);
+
+
+
+async function loadSubmissions(){
+
+
+const user = await client.auth.getUser();
+
+
+const userId = user.data.user.id;
+
+
+
+const {data,error}=await client
+
+.from("conference_submissions")
+
+.select("*")
+
+.eq("researcher_id",userId);
+
+
+
+if(error){
+
+document.getElementById("submissions").innerHTML =
+error.message;
+
+return;
+
+}
+
+
+if(data.length===0){
+
+document.getElementById("submissions").innerHTML =
+"No submissions yet";
+
+return;
+
+}
+
+
+let html="";
+
+
+data.forEach(sub=>{
+
+
+html += `
+
+<div class="card">
+
+<h3>${sub.title}</h3>
+
+<p>Conference: ${sub.conference_name}</p>
+
+<p>Presentation: ${sub.presentation_type}</p>
+
+<p>Status: ${sub.status}</p>
+
+</div>
+
+`;
+
+});
+
+
+document.getElementById("submissions").innerHTML=html;
+
+
+}
+
+
+
+loadSubmissions();
+
+
+</script>
+
+
+</body>
+</html>
