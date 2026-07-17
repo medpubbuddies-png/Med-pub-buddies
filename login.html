@@ -130,6 +130,22 @@ return;
 
 
 alert("Auth success: " + data.user.email);
+const { error: profileError } = await client
+  .from("profiles")
+  .insert([
+    {
+      id: data.user.id,
+      email: data.user.email,
+      role: "researcher"
+    }
+  ]);
+
+if (profileError) {
+  alert("Profile error: " + profileError.message);
+  return;
+}
+
+alert("Profile created successfully!");
 
 
 }
