@@ -92,14 +92,12 @@ Login
 <script>
 
 
-const client = supabase.createClient(
+const { createClient } = window.supabase;
 
-"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
-
-"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
-
+const client = createClient(
+  "https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+  "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
 );
-
 
 async function signUp(){
 
