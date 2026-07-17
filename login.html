@@ -103,10 +103,64 @@ const client = supabase.createClient(
 
 async function signUp(){
 
-alert("Signup button works");
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+
+const {data,error}=await client.auth.signUp({
+
+email: email,
+
+password: password
+
+});
+
+
+if(error){
+
+document.getElementById("message").innerHTML =
+error.message;
+
+return;
 
 }
 
+
+// Create profile
+
+const {error:profileError}=await client
+
+.from("profiles")
+
+.insert({
+
+id:data.user.id,
+
+email:email,
+
+role:"researcher"
+
+});
+
+
+if(profileError){
+
+document.getElementById("message").innerHTML =
+profileError.message;
+
+}
+
+else{
+
+document.getElementById("message").innerHTML =
+"Account created successfully!";
+
+}
+
+}
 async function signIn(){
 
 
