@@ -102,102 +102,11 @@ const client = supabase.createClient(
 );
 
 
-
 async function signUp(){
 
-
-const email =
-document.getElementById("email").value;
-
-
-const password =
-document.getElementById("password").value;
-
-
-
-async function signUp(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-
-const {data,error}=await client.auth.signUp({
-
-email: email,
-
-password: password
-
-});
-
-
-if(error){
-
-document.getElementById("message").innerHTML =
-error.message;
-
-return;
+alert("Signup button works");
 
 }
-
-
-// Create user profile
-
-const user = data.user;
-
-
-const {error:profileError}=await client
-
-.from("profiles")
-
-.insert({
-
-id:user.id,
-
-email:email,
-
-role:"researcher"
-
-});
-
-
-if(profileError){
-
-document.getElementById("message").innerHTML =
-profileError.message;
-
-}
-
-else{
-
-document.getElementById("message").innerHTML =
-"Account created successfully!";
-
-}
-
-
-}
-
-if(error){
-
-document.getElementById("message").innerHTML =
-error.message;
-
-}
-
-else{
-
-document.getElementById("message").innerHTML =
-"Account created successfully!";
-
-}
-
-
-}
-
-
 
 async function signIn(){
 
