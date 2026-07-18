@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Researcher Dashboard</title>
 
 <style>
 
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#eef2f7;
 margin:0;
 }
 
 .container{
-max-width:800px;
+max-width:900px;
 margin:40px auto;
 background:white;
 padding:30px;
 border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 h1{
@@ -26,23 +30,14 @@ color:#1565c0;
 
 .card{
 border:1px solid #ddd;
+border-radius:8px;
 padding:15px;
 margin-top:15px;
-border-radius:8px;
-}
-
-button{
-background:#1565c0;
-color:white;
-border:none;
-padding:10px;
-border-radius:5px;
 }
 
 </style>
 
 </head>
-
 
 <body>
 
@@ -52,112 +47,100 @@ border-radius:5px;
 
 <p>Welcome researcher</p>
 
-
 <h2>My Abstract Submissions</h2>
 
 <div id="submissions">
-
 Loading...
-
 </div>
 
-
 </div>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 
+const { createClient } = window.supabase;
 
-const client = window.supabase.createClient(
-
+const client = createClient(
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co",
-
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
-
 );
-
-
 
 async function loadSubmissions(){
 
+try{
 
-const user = await client.auth.getUser();
+const { data:{ user }, error:userError } =
+await client.auth.getUser();
 
+if(userError){
+document.getElementById("submissions").innerHTML =
+userError.message;
+return;
+}
 
-const userId = user.data.user.id;
+if(!user){
+document.getElementById("submissions").innerHTML =
+"Please log in first.";
+return;
+}
 
-
-
-const {data,error}=await client
-
+const { data,error } = await client
 .from("conference_submissions")
-
 .select("*")
-
-.eq("researcher_id",userId);
-
-
+.eq("researcher_id",user.id);
 
 if(error){
-
+alert(error.message);
 document.getElementById("submissions").innerHTML =
-error.message;
-
+"Error: " + error.message;
 return;
-
 }
 
-
-if(data.length===0){
-
+if(!data || data.length===0){
 document.getElementById("submissions").innerHTML =
-"No submissions yet";
-
+"No submissions found.";
 return;
-
 }
-
 
 let html="";
 
-
 data.forEach(sub=>{
 
-
 html += `
-
 <div class="card">
 
-<h3>${sub.title}</h3>
+<h3>${sub.title ?? "Untitled"}</h3>
 
-<p>Conference: ${sub.conference_name}</p>
+<p><b>Conference:</b> ${sub.conference_name ?? ""}</p>
 
-<p>Presentation: ${sub.presentation_type}</p>
+<p><b>Presentation:</b> ${sub.presentation_type ?? ""}</p>
 
-<p>Status: ${sub.status}</p>
+<p><b>Status:</b> ${sub.status ?? ""}</p>
+
+<p><b>Abstract:</b> ${sub.abstract ?? ""}</p>
 
 </div>
-
 `;
 
 });
 
+document.getElementById("submissions").innerHTML = html;
 
-document.getElementById("submissions").innerHTML=html;
+}catch(err){
 
+alert(err.message);
+
+document.getElementById("submissions").innerHTML =
+err.message;
 
 }
 
-
+}
 
 loadSubmissions();
 
-
 </script>
-
 
 </body>
 </html>
