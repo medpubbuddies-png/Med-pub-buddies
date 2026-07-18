@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Researcher Dashboard</title>
+<title>MedPub Buddies Login</title>
 
 <style>
 
 body{
+margin:0;
 font-family:Arial,sans-serif;
 background:#eef2f7;
-margin:0;
 }
 
 .container{
-max-width:900px;
-margin:40px auto;
+max-width:400px;
+margin:60px auto;
 background:white;
 padding:30px;
 border-radius:10px;
@@ -25,14 +26,32 @@ box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 h1{
+text-align:center;
 color:#1565c0;
 }
 
-.card{
-border:1px solid #ddd;
-border-radius:8px;
-padding:15px;
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#1565c0;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+#message{
+text-align:center;
 margin-top:15px;
+font-weight:bold;
 }
 
 </style>
@@ -41,109 +60,203 @@ margin-top:15px;
 
 <body>
 
+
 <div class="container">
 
-<h1>Researcher Dashboard</h1>
+<h1>MedPub Buddies</h1>
 
-<p>Welcome researcher</p>
+<input 
+type="email"
+id="email"
+placeholder="Email">
 
-<h2>My Abstract Submissions</h2>
 
-<div id="submissions">
-Loading...
+<input 
+type="password"
+id="password"
+placeholder="Password">
+
+
+<button onclick="signUp()">
+Create Account
+</button>
+
+
+<button onclick="signIn()">
+Login
+</button>
+
+
+<p id="message"></p>
+
+
 </div>
 
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+
 <script>
-alert("Researcher dashboard loaded");
 
-console.log(window.supabase);
 
-const { createClient } = window.supabase;
+const {createClient}=window.supabase;
 
-const client = createClient(
+
+const client=createClient(
+
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+
 );
 
-async function loadSubmissions(){
 
-try{
 
-const { data:{ user }, error:userError } =
-await client.auth.getUser();
+async function signUp(){
 
-if(userError){
-document.getElementById("submissions").innerHTML =
-userError.message;
-return;
-}
 
-if(!user){
-document.getElementById("submissions").innerHTML =
-"Please log in first.";
-return;
-}
+const email =
+document.getElementById("email").value;
 
-const { data,error } = await client
-.from("conference_submissions")
-.select("*")
-.eq("researcher_id",user.id);
 
-if(error){
-alert(error.message);
-document.getElementById("submissions").innerHTML =
-"Error: " + error.message;
-return;
-}
+const password =
+document.getElementById("password").value;
 
-if(!data || data.length===0){
-document.getElementById("submissions").innerHTML =
-"No submissions found.";
-return;
-}
 
-let html="";
 
-data.forEach(sub=>{
+const {data,error}=await client.auth.signUp({
 
-html += `
-<div class="card">
+email:email,
 
-<h3>${sub.title ?? "Untitled"}</h3>
-
-<p><b>Conference:</b> ${sub.conference_name ?? ""}</p>
-
-<p><b>Presentation:</b> ${sub.presentation_type ?? ""}</p>
-
-<p><b>Status:</b> ${sub.status ?? ""}</p>
-
-<p><b>Abstract:</b> ${sub.abstract ?? ""}</p>
-
-</div>
-`;
+password:password
 
 });
 
-document.getElementById("submissions").innerHTML = html;
 
-}catch(err){
 
-alert(err.message);
+if(error){
 
-document.getElementById("submissions").innerHTML =
-err.message;
+document.getElementById("message").innerHTML =
+error.message;
 
-}
+return;
 
 }
 
-loadSubmissions();
+
+
+const {error:profileError}=await client
+
+.from("profiles")
+
+.insert({
+
+id:data.user.id,
+
+email:data.user.email,
+
+role:"researcher"
+
+});
+
+
+
+if(profileError){
+
+document.getElementById("message").innerHTML =
+"Profile error: " + profileError.message;
+
+return;
+
+}
+
+
+
+document.getElementById("message").innerHTML =
+"Account created successfully!";
+
+
+}
+
+
+
+
+async function signIn(){
+
+
+const email =
+document.getElementById("email").value;
+
+
+const password =
+document.getElementById("password").value;
+
+
+
+const {data,error}=await client.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+
+if(error){
+
+document.getElementById("message").innerHTML =
+error.message;
+
+return;
+
+}
+
+
+
+const {data:profile,error:profileError}=await client
+
+.from("profiles")
+
+.select("role")
+
+.eq("id",data.user.id)
+
+.single();
+
+
+
+if(profileError){
+
+document.getElementById("message").innerHTML =
+profileError.message;
+
+return;
+
+}
+
+
+
+if(profile.role==="researcher"){
+
+window.location.href="researcher.html";
+
+}
+
+else{
+
+document.getElementById("message").innerHTML =
+"Unknown role";
+
+}
+
+
+}
+
 
 </script>
 
+
 </body>
+
 </html>
