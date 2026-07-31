@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>MedPub Buddies Login</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial,sans-serif;
@@ -53,7 +51,6 @@ margin-top:15px;
 text-align:center;
 font-weight:bold;
 }
-
 </style>
 
 </head>
@@ -65,13 +62,13 @@ font-weight:bold;
 <h1>MedPub Buddies</h1>
 
 <input
-type="email"
 id="email"
+type="email"
 placeholder="Email">
 
 <input
-type="password"
 id="password"
+type="password"
 placeholder="Password">
 
 <button onclick="signUp()">
@@ -105,10 +102,16 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
-const { error } = await client.auth.signUp({
+const { error } =
+await client.auth.signUp({
 
 email,
-password
+password,
+
+options:{
+emailRedirectTo:
+"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
+}
 
 });
 
@@ -153,20 +156,24 @@ return;
 
 const user = data.user;
 
-const { data: profile } = await client
+const { data: profile } =
+await client
 .from("profiles")
 .select("*")
-.eq("id", user.id)
+.eq("id",user.id)
 .maybeSingle();
 
 if(!profile){
 
-const { error: insertError } = await client
+const { error: insertError } =
+await client
 .from("profiles")
 .insert({
-id: user.id,
-email: user.email,
-role: "researcher"
+
+id:user.id,
+email:user.email,
+role:"researcher"
+
 });
 
 if(insertError){
@@ -180,7 +187,7 @@ return;
 
 }
 
-window.location.href = "researcher.html";
+window.location.href="researcher.html";
 
 }
 
