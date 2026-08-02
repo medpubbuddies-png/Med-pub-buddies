@@ -61,15 +61,15 @@ font-weight:bold;
 
 <h1>MedPub Buddies</h1>
 
-<input
-id="email"
-type="email"
-placeholder="Email">
+<input id="email" type="email" placeholder="Email">
 
-<input
-id="password"
-type="password"
-placeholder="Password">
+<input id="password" type="password" placeholder="Password">
+
+
+<button onclick="signUp()">
+Create Account
+</button>
+
 
 <button onclick="signIn()">
 Login
@@ -80,16 +80,20 @@ Login
 
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 
 const { createClient } = window.supabase;
 
+
 const client = createClient(
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co",
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
 );
+
+
 
 async function signUp(){
 
@@ -98,6 +102,7 @@ document.getElementById("email").value;
 
 const password =
 document.getElementById("password").value;
+
 
 const { error } =
 await client.auth.signUp({
@@ -112,6 +117,7 @@ emailRedirectTo:
 
 });
 
+
 if(error){
 
 document.getElementById("message").innerHTML =
@@ -121,10 +127,14 @@ return;
 
 }
 
+
 document.getElementById("message").innerHTML =
 "Account created! Please check your email and confirm your account before logging in.";
 
 }
+
+
+
 
 async function signIn(){
 
@@ -134,6 +144,11 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
+
+document.getElementById("message").innerHTML =
+"Logging in...";
+
+
 const { data, error } =
 await client.auth.signInWithPassword({
 
@@ -141,6 +156,7 @@ email,
 password
 
 });
+
 
 if(error){
 
@@ -151,42 +167,17 @@ return;
 
 }
 
-const user = data.user;
-
-const { data: profile } =
-await client
-.from("profiles")
-.select("*")
-.eq("id",user.id)
-.maybeSingle();
-
-if(!profile){
-
-const { error: insertError } =
-await client
-.from("profiles")
-.insert({
-
-id:user.id,
-email:user.email,
-role:"researcher"
-
-});
-
-if(insertError){
 
 document.getElementById("message").innerHTML =
-insertError.message;
+"Login successful! Redirecting...";
 
-return;
 
-}
+window.location.href =
+"researcher-dashboard.html";
 
-}
-
-window.location.href="researcher.html";
 
 }
+
 
 </script>
 
