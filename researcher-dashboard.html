@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Researcher Dashboard - MedPub Buddies</title>
 
 <style>
+
 body{
 font-family:Arial,sans-serif;
 background:#eef2f7;
@@ -27,6 +29,13 @@ color:#1565c0;
 text-align:center;
 }
 
+.user-box{
+background:#e3f2fd;
+padding:15px;
+border-radius:8px;
+margin-top:20px;
+}
+
 .card{
 padding:20px;
 margin-top:20px;
@@ -35,63 +44,174 @@ border-radius:8px;
 }
 
 button{
+
 padding:12px 20px;
 background:#1565c0;
 color:white;
 border:none;
 border-radius:5px;
 cursor:pointer;
+margin-top:20px;
+
 }
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<h1>MedPub Buddies Researcher Dashboard</h1>
-<div class="card">
-<h2>Welcome Researcher</h2>
-<p>You are successfully logged in.</p>
+
+<h1>
+MedPub Buddies Researcher Dashboard
+</h1>
+
+
+<div class="user-box">
+
+<h3>
+Logged in as:
+</h3>
+
+<p id="user-email">
+Loading...
+</p>
+
 </div>
 
+
+
 <div class="card">
-<h3>Researcher Tools</h3>
+
+<h2>
+Welcome Researcher
+</h2>
+
+<p>
+You are successfully logged in.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+Researcher Tools
+</h3>
+
 <ul>
-<li>Submit Manuscripts</li>
-<li>Find Journals</li>
-<li>Explore Research Opportunities</li>
-<li>Connect with Publication Companies</li>
+
+<li>
+Submit Manuscripts
+</li>
+
+<li>
+Find Journals
+</li>
+
+<li>
+Explore Research Opportunities
+</li>
+
+<li>
+Connect with Publication Companies
+</li>
+
 </ul>
-</div>
-
-<button onclick="logout()">Logout</button>
 
 </div>
+
+
+
+<button onclick="logout()">
+Logout
+</button>
+
+
+
+</div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+
 <script>
+
 
 const { createClient } = window.supabase;
 
+
 const client = createClient(
+
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+
 );
 
 
-async function logout(){
 
-await client.auth.signOut();
+// Check login status
 
-window.location.href="login.html";
+async function checkUser(){
+
+
+const {data} =
+await client.auth.getUser();
+
+
+
+if(!data.user){
+
+
+window.location.href =
+"login.html";
+
+
+return;
+
 
 }
 
+
+
+document.getElementById("user-email").innerHTML =
+data.user.email;
+
+
+}
+
+
+
+// Logout
+
+async function logout(){
+
+
+await client.auth.signOut();
+
+
+window.location.href =
+"login.html";
+
+
+}
+
+
+
+checkUser();
+
+
 </script>
 
+
 </body>
+
 </html>
