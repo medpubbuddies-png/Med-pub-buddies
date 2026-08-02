@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MedPub Buddies Login</title>
+<title>Researcher Dashboard - MedPub Buddies</title>
 
 <style>
 body{
-margin:0;
 font-family:Arial,sans-serif;
 background:#eef2f7;
+margin:0;
 }
 
 .container{
-max-width:400px;
-margin:60px auto;
+max-width:800px;
+margin:40px auto;
 background:white;
 padding:30px;
 border-radius:10px;
@@ -23,33 +23,24 @@ box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 h1{
-text-align:center;
 color:#1565c0;
+text-align:center;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-box-sizing:border-box;
+.card{
+padding:20px;
+margin-top:20px;
+background:#f5f7fa;
+border-radius:8px;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
+padding:12px 20px;
 background:#1565c0;
 color:white;
 border:none;
 border-radius:5px;
 cursor:pointer;
-font-size:16px;
-}
-
-#message{
-margin-top:15px;
-text-align:center;
-font-weight:bold;
 }
 </style>
 
@@ -59,27 +50,24 @@ font-weight:bold;
 
 <div class="container">
 
-<h1>MedPub Buddies</h1>
+<h1>MedPub Buddies Researcher Dashboard</h1>
 
-<input
-id="email"
-type="email"
-placeholder="Email">
+<div class="card">
+<h2>Welcome Researcher</h2>
+<p>You are successfully logged in.</p>
+</div>
 
-<input
-id="password"
-type="password"
-placeholder="Password">
+<div class="card">
+<h3>Researcher Tools</h3>
+<ul>
+<li>Submit Manuscripts</li>
+<li>Find Journals</li>
+<li>Explore Research Opportunities</li>
+<li>Connect with Publication Companies</li>
+</ul>
+</div>
 
-<button onclick="signUp()">
-Create Account
-</button>
-
-<button onclick="signIn()">
-Login
-</button>
-
-<p id="message"></p>
+<button onclick="logout()">Logout</button>
 
 </div>
 
@@ -96,85 +84,11 @@ const client = createClient(
 );
 
 
-async function signUp(){
+async function logout(){
 
-const email =
-document.getElementById("email").value;
+await client.auth.signOut();
 
-const password =
-document.getElementById("password").value;
-
-
-const { error } =
-await client.auth.signUp({
-
-email,
-password,
-
-options:{
-emailRedirectTo:
-"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
-}
-
-});
-
-
-if(error){
-
-document.getElementById("message").innerHTML =
-error.message;
-
-return;
-
-}
-
-
-document.getElementById("message").innerHTML =
-"Account created! Please check your email and confirm your account before logging in.";
-
-}
-
-
-
-async function signIn(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-
-document.getElementById("message").innerHTML =
-"Logging in...";
-
-
-const { data, error } =
-await client.auth.signInWithPassword({
-
-email,
-password
-
-});
-
-
-if(error){
-
-document.getElementById("message").innerHTML =
-error.message;
-
-return;
-
-}
-
-
-document.getElementById("message").innerHTML =
-"Login successful! Redirecting...";
-
-
-window.location.href =
-"researcher-dashboard.html";
-
+window.location.href="login.html";
 
 }
 
