@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -36,6 +37,7 @@ input, textarea {
     margin:10px 0;
     border:1px solid #ccc;
     border-radius:6px;
+    box-sizing:border-box;
 }
 
 button {
@@ -48,6 +50,12 @@ button {
     cursor:pointer;
 }
 
+#message{
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+}
+
 </style>
 
 </head>
@@ -57,9 +65,17 @@ button {
 
 
 <header>
-<h1>Researcher Registration</h1>
-<p>Join MedPub Buddies</p>
+
+<h1>
+Researcher Registration
+</h1>
+
+<p>
+Join MedPub Buddies
+</p>
+
 </header>
+
 
 
 <div class="container">
@@ -68,19 +84,42 @@ button {
 <form id="researcherForm">
 
 
-<input type="text" name="full_name" placeholder="Full Name" required>
+<input 
+type="text"
+name="full_name"
+placeholder="Full Name"
+required>
 
 
-<input type="email" name="email" placeholder="Email" required>
+<input 
+type="email"
+name="email"
+placeholder="Email"
+required>
 
 
-<input type="text" name="institution" placeholder="Institution / University">
+<input 
+type="password"
+name="password"
+placeholder="Create Password"
+required>
 
 
-<input type="text" name="field_of_research" placeholder="Field of Research">
+<input 
+type="text"
+name="institution"
+placeholder="Institution / University">
 
 
-<textarea name="bio" placeholder="Short Bio"></textarea>
+<input 
+type="text"
+name="field_of_research"
+placeholder="Field of Research">
+
+
+<textarea
+name="bio"
+placeholder="Short Bio"></textarea>
 
 
 <button type="submit">
@@ -91,7 +130,11 @@ Register
 </form>
 
 
+<p id="message"></p>
+
+
 </div>
+
 
 
 
@@ -101,56 +144,147 @@ Register
 <script>
 
 
-const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
 
-const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
 
 
-const supabaseClient = supabase.createClient(
+
+const supabaseClient =
+supabase.createClient(
 supabaseUrl,
 supabaseKey
 );
 
 
 
-const form = document.getElementById("researcherForm");
+
+const form =
+document.getElementById("researcherForm");
 
 
 
-form.addEventListener("submit", async function(e){
+const message =
+document.getElementById("message");
+
+
+
+
+
+form.addEventListener(
+"submit",
+async function(e){
+
 
 e.preventDefault();
 
 
-const data = new FormData(form);
+
+const data =
+new FormData(form);
 
 
-const { error } = await supabaseClient
-.from("researchers")
-.insert([
-{
-full_name: data.get("full_name"),
-email: data.get("email"),
-institution: data.get("institution"),
-field_of_research: data.get("field_of_research"),
-bio: data.get("bio")
+
+const email =
+data.get("email");
+
+
+const password =
+data.get("password");
+
+
+
+// Create user account
+
+const {data:authData,error:authError} =
+await supabaseClient.auth.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+
+emailRedirectTo:
+"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
+
 }
-]);
+
+});
 
 
 
-if(error){
 
-alert("Error: " + error.message);
+if(authError){
 
-}else{
+message.innerHTML =
+authError.message;
 
-alert("Researcher registered successfully!");
+return;
+
+}
+
+
+
+
+const user =
+authData.user;
+
+
+
+// Save researcher profile
+
+const {error:profileError} =
+await supabaseClient
+.from("profiles")
+.insert([{
+
+
+id:user.id,
+
+email:email,
+
+full_name:
+data.get("full_name"),
+
+institution:
+data.get("institution"),
+
+research_interest:
+data.get("field_of_research"),
+
+role:
+"researcher"
+
+
+}]);
+
+
+
+
+
+if(profileError){
+
+message.innerHTML =
+profileError.message;
+
+return;
+
+}
+
+
+
+
+message.innerHTML =
+"Registration successful! Please check your email and confirm your account.";
+
+
 
 form.reset();
 
-}
 
 
 });
@@ -160,4 +294,5 @@ form.reset();
 
 
 </body>
+
 </html>
