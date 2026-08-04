@@ -1,86 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedPub Buddies</title>
+
+<title>MedPub Buddies - Global Research Network</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eef2f7;
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef2f7;
+color:#333;
 }
 
-header {
-    background: linear-gradient(90deg, #1e88e5, #1565c0);
-    color: white;
-    padding: 50px 20px;
-    text-align: center;
+
+/* Navigation */
+
+nav{
+
+background:#1565c0;
+padding:15px;
+text-align:center;
+
 }
 
-nav {
-    background: white;
-    padding: 15px;
-    text-align: center;
+
+nav a{
+
+color:white;
+text-decoration:none;
+margin:8px;
+font-size:14px;
+
 }
 
-nav a {
-    margin: 10px;
-    text-decoration: none;
-    color: #1e88e5;
-    font-weight: bold;
+
+
+/* Hero */
+
+.hero{
+
+background:white;
+padding:60px 20px;
+text-align:center;
+
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
+
+.hero h1{
+
+font-size:40px;
+color:#1565c0;
+
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+.hero p{
+
+font-size:20px;
+max-width:800px;
+margin:auto;
+
 }
+
+
+
+.button{
+
+display:inline-block;
+margin:20px 10px;
+padding:14px 25px;
+background:#1565c0;
+color:white;
+text-decoration:none;
+border-radius:6px;
+
+}
+
+
+
+/* Sections */
+
+
+.container{
+
+max-width:1100px;
+margin:auto;
+padding:30px;
+
+}
+
+
+
+.section{
+
+background:white;
+margin:25px 0;
+padding:30px;
+border-radius:10px;
+
+}
+
+
+
+.cards{
+
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+
+
+.card{
+
+flex:1;
+min-width:250px;
+background:#f5f7fa;
+padding:20px;
+border-radius:8px;
+
+}
+
+
+
+.card h3{
+
+color:#1565c0;
+
+}
+
+
+
+/* Footer */
+
+
+footer{
+
+background:#1565c0;
+color:white;
+text-align:center;
+padding:20px;
+
+}
+
+
+
+@media(max-width:700px){
+
+.hero h1{
+font-size:30px;
+}
+
+.cards{
+display:block;
+}
+
+.card{
+margin-bottom:15px;
+}
+
+}
+
+
 </style>
+
+
 </head>
+
+
 
 <body>
 
-<header>
-    <h1>MedPub Buddies</h1>
-    <p>A platform connecting researchers with journals, publication companies, conferences, and research opportunities worldwide.</p>
-</header>
+
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="journals.html">Journals</a>
-    <a href="submit.html">Submit</a>
-    <a href="company-register.html">Register Publication Company</a>
-    <a href="companies.html">Publication Companies</a>
-    <a href="researcher-register.html">Register as Researcher</a>
-    <a href="researcher-dashboard.html">Researcher Dashboard</a>
-    <a href="research-opportunities.html">Research Opportunities</a>
-<a href="company-dashboard.html">Company Dashboard</a>
-    <a href="conference-dashboard.html">Conference Dashboard</a>
-</a>
+
+<a href="index.html">Home</a>
+
+<a href="journals.html">Journals</a>
+
+<a href="submit.html">Submit</a>
+
+<a href="researcher-register.html">Researcher Registration</a>
+
+<a href="company-register.html">Publication Company</a>
+
+<a href="research-opportunities.html">Research Opportunities</a>
+
 </nav>
+
+
+
+
+
+<section class="hero">
+
+
+<h1>
+MedPub Buddies
+</h1>
+
+
+<p>
+A global platform connecting researchers with journals, publication companies, conferences, and research opportunities worldwide.
+</p>
+
+
+
+<a class="button" href="researcher-register.html">
+Join as Researcher
+</a>
+
+
+<a class="button" href="company-register.html">
+Register Publication Company
+</a>
+
+
+
+</section>
+
+
+
+
 
 <div class="container">
 
-    <div class="card">
-        <h2>Welcome</h2>
-       <p>A platform connecting researchers with journals, publication companies, conferences, and research opportunities worldwide.</p>
-    </div>
 
-    <div class="card">
-        <h2>What You Can Do</h2>
-        <p>Discover journals, connect with publication companies, submit manuscripts, and find research opportunities.</p>
+
+<div class="section">
+
+
+<h2>
+What is MedPub Buddies?
+</h2>
+
+
+<p>
+MedPub Buddies helps researchers discover publishing opportunities, connect with journals, collaborate with publication organizations, and advance scientific communication globally.
+</p>
+
 
 </div>
 
+
+
+
+
+<div class="section">
+
+
+<h2>
+Our Platform
+</h2>
+
+
+
+<div class="cards">
+
+
+
+<div class="card">
+
+<h3>
+📄 Manuscript Submission
+</h3>
+
+<p>
+Submit research work and explore publishing pathways.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+📚 Journal Discovery
+</h3>
+
+<p>
+Find suitable journals for your research field.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+🌍 Research Opportunities
+</h3>
+
+<p>
+Discover conferences, collaborations, and global research opportunities.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+🏢 Publication Connections
+</h3>
+
+<p>
+Connect researchers with publication companies and scientific organizations.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="section">
+
+
+<h2>
+Who Can Join?
+</h2>
+
+
+
+<div class="cards">
+
+
+
+<div class="card">
+
+<h3>
+Researchers
+</h3>
+
+<p>
+Medical students, academics, scientists, and professionals can build profiles and discover opportunities.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+Publication Companies
+</h3>
+
+<p>
+Organizations can connect with researchers and provide publishing services.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+Conference Organizers
+</h3>
+
+<p>
+Promote scientific events and connect with global participants.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="section" style="text-align:center;">
+
+
+<h2>
+Join the Global Research Community
+</h2>
+
+
+<p>
+Together, we make research discovery, collaboration, and publication more accessible.
+</p>
+
+
+<a class="button" href="researcher-register.html">
+Create Researcher Account
+</a>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+<footer>
+
+<p>
+© 2026 MedPub Buddies. Connecting researchers worldwide.
+</p>
+
+</footer>
+
+
+
+
 </body>
+
 </html>
