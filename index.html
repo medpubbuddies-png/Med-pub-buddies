@@ -6,200 +6,78 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MedPub Buddies - Global Research Network</title>
+<title>MedPub Buddies Login</title>
 
 <style>
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#eef2f7;
-color:#333;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
 }
-
-
-/* Navigation */
-
-nav{
-
-background:#1565c0;
-padding:15px;
-text-align:center;
-
-}
-
-
-nav a{
-
-color:white;
-text-decoration:none;
-margin:8px;
-font-size:14px;
-
-}
-
-
-
-/* Hero */
-
-.hero{
-
-background:white;
-padding:60px 20px;
-text-align:center;
-
-}
-
-
-.hero h1{
-
-font-size:40px;
-color:#1565c0;
-
-}
-
-
-.hero p{
-
-font-size:20px;
-max-width:800px;
-margin:auto;
-
-}
-
-
-
-.button{
-
-display:inline-block;
-margin:20px 10px;
-padding:14px 25px;
-background:#1565c0;
-color:white;
-text-decoration:none;
-border-radius:6px;
-
-}
-
-
-
-/* Sections */
-
 
 .container{
-
-max-width:1100px;
-margin:auto;
-padding:30px;
-
+    max-width:400px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-
-
-.section{
-
-background:white;
-margin:25px 0;
-padding:30px;
-border-radius:10px;
-
+h1{
+    text-align:center;
+    color:#1565c0;
 }
 
-
-
-.cards{
-
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:5px;
 }
 
-
-
-.card{
-
-flex:1;
-min-width:250px;
-background:#f5f7fa;
-padding:20px;
-border-radius:8px;
-
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#1565c0;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
 }
 
-
-
-.card h3{
-
-color:#1565c0;
-
+button:hover{
+    background:#0d47a1;
 }
 
-
-
-/* Footer */
-
-
-footer{
-
-background:#1565c0;
-color:white;
-text-align:center;
-padding:20px;
-
+#message{
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
 }
 
-
-
-@media(max-width:700px){
-
-.hero h1{
-font-size:30px;
+.home-link{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#1565c0;
+    text-decoration:none;
 }
-
-.cards{
-display:block;
-}
-
-.card{
-margin-bottom:15px;
-}
-
-}
-
 
 </style>
 
-
 </head>
-
 
 
 <body>
 
 
-
-<nav>
-
-<a href="index.html">Home</a>
-
-<a href="journals.html">Journals</a>
-
-<a href="submit.html">Submit</a>
-
-<a href="researcher-register.html">Researcher Registration</a>
-
-<a href="company-register.html">Publication Company</a>
-
-<a href="research-opportunities.html">Research Opportunities</a>
-
-</nav>
-
-
-
-
-
-<section class="hero">
+<div class="container">
 
 
 <h1>
@@ -207,211 +85,37 @@ MedPub Buddies
 </h1>
 
 
-<p>
-A global platform connecting researchers with journals, publication companies, conferences, and research opportunities worldwide.
-</p>
+<input
+id="email"
+type="email"
+placeholder="Email"
+required>
 
 
+<input
+id="password"
+type="password"
+placeholder="Password"
+required>
 
-<a class="button" href="researcher-register.html">
-Join as Researcher
-</a>
 
+<button onclick="signUp()">
+Create Account
+</button>
 
-<a class="button" href="company-register.html">
-Register Publication Company
-</a>
 
+<button onclick="signIn()">
+Login
+</button>
 
 
-</section>
+<p id="message"></p>
 
 
-
-
-
-<div class="container">
-
-
-
-<div class="section">
-
-
-<h2>
-What is MedPub Buddies?
-</h2>
-
-
-<p>
-MedPub Buddies helps researchers discover publishing opportunities, connect with journals, collaborate with publication organizations, and advance scientific communication globally.
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="section">
-
-
-<h2>
-Our Platform
-</h2>
-
-
-
-<div class="cards">
-
-
-
-<div class="card">
-
-<h3>
-📄 Manuscript Submission
-</h3>
-
-<p>
-Submit research work and explore publishing pathways.
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-📚 Journal Discovery
-</h3>
-
-<p>
-Find suitable journals for your research field.
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-🌍 Research Opportunities
-</h3>
-
-<p>
-Discover conferences, collaborations, and global research opportunities.
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-🏢 Publication Connections
-</h3>
-
-<p>
-Connect researchers with publication companies and scientific organizations.
-</p>
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<div class="section">
-
-
-<h2>
-Who Can Join?
-</h2>
-
-
-
-<div class="cards">
-
-
-
-<div class="card">
-
-<h3>
-Researchers
-</h3>
-
-<p>
-Medical students, academics, scientists, and professionals can build profiles and discover opportunities.
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-Publication Companies
-</h3>
-
-<p>
-Organizations can connect with researchers and provide publishing services.
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>
-Conference Organizers
-</h3>
-
-<p>
-Promote scientific events and connect with global participants.
-</p>
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<div class="section" style="text-align:center;">
-
-
-<h2>
-Join the Global Research Community
-</h2>
-
-
-<p>
-Together, we make research discovery, collaboration, and publication more accessible.
-</p>
-
-
-<a class="button" href="researcher-register.html">
-Create Researcher Account
+<a
+class="home-link"
+href="index.html">
+Back to Home
 </a>
 
 
@@ -419,22 +123,195 @@ Create Researcher Account
 
 
 
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 
+<script>
 
 
-<footer>
-
-<p>
-© 2026 MedPub Buddies. Connecting researchers worldwide.
-</p>
-
-</footer>
+const { createClient } = window.supabase;
 
 
+const client = createClient(
+
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+
+);
+
+
+
+
+/* =========================
+   CREATE ACCOUNT
+========================= */
+
+
+async function signUp(){
+
+
+const email =
+document.getElementById("email").value.trim();
+
+
+const password =
+document.getElementById("password").value;
+
+
+const message =
+document.getElementById("message");
+
+
+
+if(!email || !password){
+
+message.innerHTML =
+"Please enter your email and password.";
+
+return;
+
+}
+
+
+
+message.innerHTML =
+"Creating account...";
+
+
+
+const { error } =
+await client.auth.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+
+emailRedirectTo:
+"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
+
+}
+
+});
+
+
+
+if(error){
+
+message.innerHTML =
+error.message;
+
+return;
+
+}
+
+
+
+message.innerHTML =
+"Account created! Please check your email and confirm your account.";
+
+}
+
+
+
+
+/* =========================
+   LOGIN
+========================= */
+
+
+async function signIn(){
+
+
+const email =
+document.getElementById("email").value.trim();
+
+
+const password =
+document.getElementById("password").value;
+
+
+const message =
+document.getElementById("message");
+
+
+
+if(!email || !password){
+
+message.innerHTML =
+"Please enter your email and password.";
+
+return;
+
+}
+
+
+
+message.innerHTML =
+"Logging in...";
+
+
+
+const { data, error } =
+await client.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+
+if(error){
+
+message.innerHTML =
+error.message;
+
+return;
+
+}
+
+
+
+if(!data.user){
+
+message.innerHTML =
+"Login failed. Please try again.";
+
+return;
+
+}
+
+
+
+message.innerHTML =
+"Login successful! Opening MedPub Buddies Home...";
+
+
+
+/*
+   IMPORTANT:
+   Login now goes to HOME,
+   NOT directly to the researcher dashboard.
+*/
+
+
+setTimeout(function(){
+
+window.location.href =
+"index.html";
+
+},1000);
+
+
+}
+
+
+
+</script>
 
 
 </body>
