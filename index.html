@@ -10,6 +10,10 @@
 
 <style>
 
+/* =========================
+   GENERAL
+========================= */
+
 *{
     box-sizing:border-box;
 }
@@ -29,7 +33,7 @@ body{
 header{
     background:#1565c0;
     color:white;
-    padding:30px 20px;
+    padding:35px 20px;
     text-align:center;
 }
 
@@ -39,8 +43,9 @@ header h1{
 }
 
 header p{
-    margin:10px 0 0;
-    font-size:17px;
+    margin:10px auto 0;
+    max-width:800px;
+    line-height:1.5;
 }
 
 
@@ -50,19 +55,19 @@ header p{
 
 nav{
     background:white;
-    padding:15px;
+    padding:12px;
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    gap:10px;
+    gap:6px;
     box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 nav a{
-    text-decoration:none;
     color:#1565c0;
+    text-decoration:none;
     font-weight:bold;
-    padding:10px 14px;
+    padding:10px 12px;
     border-radius:5px;
 }
 
@@ -72,7 +77,7 @@ nav a:hover{
 
 
 /* =========================
-   MAIN CONTAINER
+   MAIN
 ========================= */
 
 .container{
@@ -96,13 +101,13 @@ nav a:hover{
 
 .welcome h2{
     color:#1565c0;
-    margin-top:0;
     font-size:30px;
+    margin-top:0;
 }
 
 .welcome p{
-    font-size:18px;
-    line-height:1.6;
+    font-size:17px;
+    line-height:1.7;
 }
 
 
@@ -112,8 +117,11 @@ nav a:hover{
 
 .cards{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
     gap:20px;
+
     margin-top:30px;
 }
 
@@ -121,7 +129,10 @@ nav a:hover{
     background:white;
     padding:25px;
     border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,0.08);
+
     text-align:center;
 }
 
@@ -131,16 +142,19 @@ nav a:hover{
 }
 
 .card p{
-    line-height:1.5;
+    line-height:1.6;
 }
 
 .card a{
     display:inline-block;
     margin-top:10px;
     padding:10px 16px;
+
     background:#1565c0;
     color:white;
+
     text-decoration:none;
+
     border-radius:5px;
 }
 
@@ -150,40 +164,52 @@ nav a:hover{
 
 
 /* =========================
-   ACCOUNT SECTION
+   ACCOUNT
 ========================= */
 
 .account{
-    margin-top:30px;
     background:white;
-    padding:25px;
+
+    margin-top:30px;
+
+    padding:30px;
+
     border-radius:10px;
+
     text-align:center;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+
+    box-shadow:
+    0 2px 10px rgba(0,0,0,0.08);
 }
 
 .account h2{
     color:#1565c0;
 }
 
+#userInfo{
+    margin-bottom:20px;
+}
+
 .account button{
     padding:12px 20px;
+
     margin:5px;
+
     border:none;
+
     border-radius:5px;
+
     background:#1565c0;
+
     color:white;
+
     cursor:pointer;
+
     font-size:15px;
 }
 
 .account button:hover{
     background:#0d47a1;
-}
-
-#userInfo{
-    margin-bottom:15px;
-    font-weight:bold;
 }
 
 
@@ -193,14 +219,18 @@ nav a:hover{
 
 footer{
     margin-top:50px;
+
     background:#1565c0;
+
     color:white;
+
     text-align:center;
+
     padding:25px 15px;
 }
 
 footer p{
-    margin:5px;
+    margin:6px;
 }
 
 
@@ -221,11 +251,10 @@ header p{
 nav{
     flex-direction:column;
     align-items:stretch;
-    text-align:center;
 }
 
 nav a{
-    display:block;
+    text-align:center;
 }
 
 .container{
@@ -241,6 +270,7 @@ nav a{
 }
 
 }
+
 
 </style>
 
@@ -261,8 +291,9 @@ MedPub Buddies
 </h1>
 
 <p>
-Connecting researchers with journals, publication companies,
-conferences, and research opportunities worldwide.
+A platform connecting researchers with journals,
+publication companies, conferences, and research
+opportunities worldwide.
 </p>
 
 </header>
@@ -284,7 +315,7 @@ Journals
 </a>
 
 <a href="submit.html">
-Submit Manuscript
+Submit
 </a>
 
 <a href="company-register.html">
@@ -304,7 +335,7 @@ Research Opportunities
 </a>
 
 <a href="conference-dashboard.html">
-Conferences
+Conference Dashboard
 </a>
 
 <a href="login.html">
@@ -331,15 +362,16 @@ Welcome to MedPub Buddies
 </h2>
 
 <p>
-A global platform designed to connect researchers,
-journals, publication companies, conferences,
-and research opportunities.
+MedPub Buddies connects researchers,
+journals, publication companies,
+conference organizers, and research
+opportunities in one platform.
 </p>
 
 <p>
-Discover opportunities, share your research,
-connect with collaborators, and advance your
-academic career.
+Discover opportunities, submit research,
+connect with academic partners, and
+advance your research career.
 </p>
 
 </section>
@@ -347,7 +379,7 @@ academic career.
 
 
 <!-- =========================
-     PLATFORM FEATURES
+     PLATFORM SERVICES
 ========================= -->
 
 <div class="cards">
@@ -362,8 +394,8 @@ academic career.
 </h3>
 
 <p>
-Discover journals suitable for your research
-and explore publication opportunities.
+Find journals and explore publication
+opportunities for your research.
 </p>
 
 <a href="journals.html">
@@ -374,7 +406,7 @@ Explore Journals
 
 
 
-<!-- MANUSCRIPTS -->
+<!-- SUBMIT -->
 
 <div class="card">
 
@@ -384,7 +416,7 @@ Explore Journals
 
 <p>
 Submit your manuscript and connect with
-appropriate publication opportunities.
+publication opportunities.
 </p>
 
 <a href="submit.html">
@@ -404,8 +436,8 @@ Submit Manuscript
 </h3>
 
 <p>
-Create your researcher profile and connect
-with the global research community.
+Create your researcher profile and
+connect with the research community.
 </p>
 
 <a href="researcher-register.html">
@@ -425,8 +457,8 @@ Register as Researcher
 </h3>
 
 <p>
-Publication companies can join MedPub Buddies
-and connect with researchers.
+Publication companies can join the
+platform and connect with researchers.
 </p>
 
 <a href="companies.html">
@@ -446,8 +478,9 @@ View Companies
 </h3>
 
 <p>
-Find research opportunities, collaborations,
-projects, and academic possibilities.
+Explore research projects,
+collaborations, fellowships and
+other opportunities.
 </p>
 
 <a href="research-opportunities.html">
@@ -468,7 +501,7 @@ Explore Opportunities
 
 <p>
 Discover conferences and connect with
-academic and scientific communities.
+scientific and academic communities.
 </p>
 
 <a href="conference-dashboard.html">
@@ -483,38 +516,54 @@ Explore Conferences
 
 
 <!-- =========================
-     ACCOUNT
+     ACCOUNT SECTION
 ========================= -->
 
 <section class="account">
 
 <h2>
-Your MedPub Buddies Account
+My MedPub Buddies Account
 </h2>
 
 <p id="userInfo">
 You are currently browsing as a guest.
 </p>
 
+
+<!-- LOGIN -->
+
 <button
 id="loginButton"
 onclick="goToLogin()">
+
 Login
+
 </button>
+
+
+<!-- DASHBOARD -->
 
 <button
 id="dashboardButton"
 onclick="openDashboard()"
 style="display:none;">
+
 My Dashboard
+
 </button>
+
+
+<!-- LOGOUT -->
 
 <button
 id="logoutButton"
 onclick="logout()"
 style="display:none;">
+
 Logout
+
 </button>
+
 
 </section>
 
@@ -530,11 +579,14 @@ Logout
 <footer>
 
 <p>
-<strong>MedPub Buddies</strong>
+<strong>
+MedPub Buddies
+</strong>
 </p>
 
 <p>
-Connecting researchers with global academic opportunities.
+Connecting researchers with global
+academic opportunities.
 </p>
 
 <p>
@@ -555,13 +607,15 @@ Connecting researchers with global academic opportunities.
 <script>
 
 
+/* =========================
+   SUPABASE CONFIGURATION
+========================= */
+
 const supabaseUrl =
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-
 const supabaseKey =
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
-
 
 const client =
 supabase.createClient(
@@ -572,7 +626,7 @@ supabase.createClient(
 
 
 /* =========================
-   LOGIN BUTTON
+   GO TO LOGIN
 ========================= */
 
 function goToLogin(){
@@ -585,7 +639,7 @@ window.location.href =
 
 
 /* =========================
-   CHECK LOGIN
+   CHECK CURRENT USER
 ========================= */
 
 async function checkUser(){
@@ -597,6 +651,8 @@ const {
 } = await client.auth.getUser();
 
 
+/* USER IS NOT LOGGED IN */
+
 if(!user){
 
 return;
@@ -606,24 +662,29 @@ return;
 
 /* USER IS LOGGED IN */
 
-document.getElementById("userInfo").innerHTML =
+document.getElementById(
+    "userInfo"
+).innerHTML =
 "Logged in as: <strong>" +
 user.email +
 "</strong>";
 
 
-document.getElementById("loginButton")
-.style.display =
+document.getElementById(
+    "loginButton"
+).style.display =
 "none";
 
 
-document.getElementById("dashboardButton")
-.style.display =
+document.getElementById(
+    "dashboardButton"
+).style.display =
 "inline-block";
 
 
-document.getElementById("logoutButton")
-.style.display =
+document.getElementById(
+    "logoutButton"
+).style.display =
 "inline-block";
 
 }
@@ -636,12 +697,15 @@ document.getElementById("logoutButton")
 
 async function openDashboard(){
 
+
 const {
     data:{
         user
     }
 } = await client.auth.getUser();
 
+
+/* NOT LOGGED IN */
 
 if(!user){
 
@@ -653,9 +717,9 @@ return;
 }
 
 
-/*
-Get the user's role
-*/
+/* =========================
+   GET USER ROLE
+========================= */
 
 const {
     data:profile,
@@ -667,11 +731,12 @@ const {
 .maybeSingle();
 
 
+/* DATABASE ERROR */
+
 if(error){
 
 alert(
-"Unable to find your account role: "
-+
+"Unable to find your account role: " +
 error.message
 );
 
@@ -679,6 +744,8 @@ return;
 
 }
 
+
+/* NO PROFILE */
 
 if(!profile){
 
@@ -691,9 +758,9 @@ return;
 }
 
 
-/*
-Researcher
-*/
+/* =========================
+   RESEARCHER
+========================= */
 
 if(profile.role === "researcher"){
 
@@ -705,9 +772,9 @@ return;
 }
 
 
-/*
-Publication Company
-*/
+/* =========================
+   PUBLICATION COMPANY
+========================= */
 
 if(profile.role === "company"){
 
@@ -719,9 +786,9 @@ return;
 }
 
 
-/*
-Conference
-*/
+/* =========================
+   CONFERENCE
+========================= */
 
 if(profile.role === "conference"){
 
@@ -733,9 +800,9 @@ return;
 }
 
 
-/*
-Unknown role
-*/
+/* =========================
+   UNKNOWN ROLE
+========================= */
 
 alert(
 "Your account role is not recognized."
