@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MedPub Buddies - Login</title>
+<title>MedPub Buddies Login</title>
 
 <style>
 
@@ -30,7 +30,6 @@ body{
 h1{
     text-align:center;
     color:#1565c0;
-    margin-bottom:30px;
 }
 
 input{
@@ -53,10 +52,6 @@ button{
     border-radius:5px;
     cursor:pointer;
     font-size:16px;
-}
-
-button:hover{
-    background:#0d47a1;
 }
 
 #message{
@@ -83,7 +78,6 @@ button:hover{
 
 <div class="container">
 
-
 <h1>
 MedPub Buddies
 </h1>
@@ -93,7 +87,6 @@ MedPub Buddies
 id="email"
 type="email"
 placeholder="Email"
-autocomplete="email"
 >
 
 
@@ -101,23 +94,24 @@ autocomplete="email"
 id="password"
 type="password"
 placeholder="Password"
-autocomplete="current-password"
 >
 
 
 <button
 type="button"
-onclick="signUp()"
->
+onclick="signUp()">
+
 Create Account
+
 </button>
 
 
 <button
 type="button"
-onclick="signIn()"
->
+onclick="signIn()">
+
 Login
+
 </button>
 
 
@@ -126,9 +120,10 @@ Login
 
 <a
 class="home-link"
-href="https://medpubbuddies-png.github.io/Med-pub-buddies/index.html"
->
+href="https://medpubbuddies-png.github.io/Med-pub-buddies/index.html">
+
 Back to Home
+
 </a>
 
 
@@ -142,90 +137,45 @@ Back to Home
 <script>
 
 
-/* ==============================
-   SUPABASE
-============================== */
+const client = supabase.createClient(
 
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
 
-const supabaseUrl =
-"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
 
-
-const supabaseKey =
-"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
-
-
-const client =
-supabase.createClient(
-    supabaseUrl,
-    supabaseKey
 );
 
 
 
-/* ==============================
-   MESSAGE
-============================== */
-
-
-function showMessage(text){
-
-document.getElementById("message").innerText =
-text;
-
-}
-
-
-
-/* ==============================
-   CREATE ACCOUNT
-============================== */
-
+/* CREATE ACCOUNT */
 
 async function signUp(){
-
 
 const email =
 document.getElementById("email").value.trim();
 
-
 const password =
 document.getElementById("password").value;
 
-
-if(email === ""){
-
-showMessage("Please enter your email.");
-
-return;
-
-}
+const message =
+document.getElementById("message");
 
 
-if(password === ""){
+if(!email || !password){
 
-showMessage("Please enter your password.");
+message.innerText =
+"Please enter email and password.";
 
 return;
 
 }
 
 
-if(password.length < 6){
-
-showMessage(
-"Password must be at least 6 characters."
-);
-
-return;
-
-}
+message.innerText =
+"Creating account...";
 
 
-showMessage("Creating account...");
-
-
-const { error } =
+const {error} =
 await client.auth.signUp({
 
 email:email,
@@ -244,61 +194,50 @@ emailRedirectTo:
 
 if(error){
 
-showMessage(
-error.message
-);
+message.innerText =
+error.message;
 
 return;
 
 }
 
 
-showMessage(
-"Account created! Please check your email and confirm your account."
-);
+message.innerText =
+"Account created! Check your email to confirm your account.";
 
 }
 
 
 
-/* ==============================
-   LOGIN
-============================== */
-
+/* LOGIN */
 
 async function signIn(){
-
 
 const email =
 document.getElementById("email").value.trim();
 
-
 const password =
 document.getElementById("password").value;
 
-
-if(email === ""){
-
-showMessage("Please enter your email.");
-
-return;
-
-}
+const message =
+document.getElementById("message");
 
 
-if(password === ""){
+if(!email || !password){
 
-showMessage("Please enter your password.");
+message.innerText =
+"Please enter email and password.";
 
 return;
 
 }
 
 
-showMessage("Logging in...");
+message.innerText =
+"Logging in...";
 
 
-const { data, error } =
+const {data,error} =
 await client.auth.signInWithPassword({
 
 email:email,
@@ -310,9 +249,8 @@ password:password
 
 if(error){
 
-showMessage(
-error.message
-);
+message.innerText =
+error.message;
 
 return;
 
@@ -321,42 +259,31 @@ return;
 
 if(!data.user){
 
-showMessage(
-"Login failed. Please try again."
-);
+message.innerText =
+"Login failed.";
 
 return;
 
 }
 
 
-showMessage(
-"Login successful! Opening Home..."
-);
+/* LOGIN SUCCESS */
+
+message.innerText =
+"Login successful! Going to Home...";
 
 
 /*
-========================================
-IMPORTANT
-
-Every successful login goes to HOME.
-
-There is NO researcher dashboard redirect.
-There is NO company dashboard redirect.
-There is NO conference dashboard redirect.
-
-========================================
+WAIT 2 SECONDS SO YOU CAN SEE
+THE SUCCESS MESSAGE
 */
-
 
 setTimeout(function(){
 
-window.location.replace(
-"https://medpubbuddies-png.github.io/Med-pub-buddies/index.html"
-);
+window.location.href =
+"https://medpubbuddies-png.github.io/Med-pub-buddies/index.html";
 
-},1500);
-
+},2000);
 
 }
 
