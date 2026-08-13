@@ -1,118 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MedPub Buddies Login</title>
+<title>MedPub Buddies - Login</title>
 
 <style>
+
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#eef2f7;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
 }
 
 .container{
-max-width:400px;
-margin:60px auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    width:90%;
+    max-width:400px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 h1{
-text-align:center;
-color:#1565c0;
+    text-align:center;
+    color:#1565c0;
+    margin-bottom:30px;
 }
 
 input{
-width:100%;
-padding:12px;
-margin:10px 0;
-box-sizing:border-box;
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:16px;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#1565c0;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-font-size:16px;
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#1565c0;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0d47a1;
 }
 
 #message{
-margin-top:15px;
-text-align:center;
-font-weight:bold;
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
 }
+
+.home-link{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#1565c0;
+    text-decoration:none;
+}
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<h1>MedPub Buddies</h1>
 
-<input id="email" type="email" placeholder="Email">
+<h1>
+MedPub Buddies
+</h1>
 
-<input id="password" type="password" placeholder="Password">
+
+<input
+id="email"
+type="email"
+placeholder="Email"
+autocomplete="email"
+>
 
 
-<button onclick="signUp()">
+<input
+id="password"
+type="password"
+placeholder="Password"
+autocomplete="current-password"
+>
+
+
+<button
+type="button"
+onclick="signUp()"
+>
 Create Account
 </button>
 
 
-<button onclick="signIn()">
+<button
+type="button"
+onclick="signIn()"
+>
 Login
 </button>
 
 
 <p id="message"></p>
 
+
+<a
+class="home-link"
+href="https://medpubbuddies-png.github.io/Med-pub-buddies/index.html"
+>
+Back to Home
+</a>
+
+
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+
 <script>
 
-const { createClient } = window.supabase;
+
+/* ==============================
+   SUPABASE
+============================== */
 
 
-const client = createClient(
-"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
-"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const client =
+supabase.createClient(
+    supabaseUrl,
+    supabaseKey
 );
 
 
 
+/* ==============================
+   MESSAGE
+============================== */
+
+
+function showMessage(text){
+
+document.getElementById("message").innerText =
+text;
+
+}
+
+
+
+/* ==============================
+   CREATE ACCOUNT
+============================== */
+
+
 async function signUp(){
 
+
 const email =
-document.getElementById("email").value;
+document.getElementById("email").value.trim();
+
 
 const password =
 document.getElementById("password").value;
+
+
+if(email === ""){
+
+showMessage("Please enter your email.");
+
+return;
+
+}
+
+
+if(password === ""){
+
+showMessage("Please enter your password.");
+
+return;
+
+}
+
+
+if(password.length < 6){
+
+showMessage(
+"Password must be at least 6 characters."
+);
+
+return;
+
+}
+
+
+showMessage("Creating account...");
 
 
 const { error } =
 await client.auth.signUp({
 
-email,
-password,
+email:email,
+
+password:password,
 
 options:{
+
 emailRedirectTo:
 "https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
+
 }
 
 });
@@ -120,65 +244,126 @@ emailRedirectTo:
 
 if(error){
 
-document.getElementById("message").innerHTML =
-error.message;
+showMessage(
+error.message
+);
 
 return;
 
 }
 
 
-document.getElementById("message").innerHTML =
-"Account created! Please check your email and confirm your account before logging in.";
+showMessage(
+"Account created! Please check your email and confirm your account."
+);
 
 }
 
 
 
+/* ==============================
+   LOGIN
+============================== */
+
 
 async function signIn(){
 
+
 const email =
-document.getElementById("email").value;
+document.getElementById("email").value.trim();
+
 
 const password =
 document.getElementById("password").value;
 
 
-document.getElementById("message").innerHTML =
-"Logging in...";
+if(email === ""){
 
-
-const { data, error } =
-await client.auth.signInWithPassword({
-
-email,
-password
-
-});
-
-
-if(error){
-
-document.getElementById("message").innerHTML =
-error.message;
+showMessage("Please enter your email.");
 
 return;
 
 }
 
 
-document.getElementById("message").innerHTML =
-"Login successful! Redirecting...";
+if(password === ""){
+
+showMessage("Please enter your password.");
+
+return;
+
+}
 
 
-window.location.href =
-"https://medpubbuddies-png.github.io/Med-pub-buddies/researcher-dashboard.html";
+showMessage("Logging in...");
+
+
+const { data, error } =
+await client.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+if(error){
+
+showMessage(
+error.message
+);
+
+return;
+
+}
+
+
+if(!data.user){
+
+showMessage(
+"Login failed. Please try again."
+);
+
+return;
+
+}
+
+
+showMessage(
+"Login successful! Opening Home..."
+);
+
+
+/*
+========================================
+IMPORTANT
+
+Every successful login goes to HOME.
+
+There is NO researcher dashboard redirect.
+There is NO company dashboard redirect.
+There is NO conference dashboard redirect.
+
+========================================
+*/
+
+
+setTimeout(function(){
+
+window.location.replace(
+"https://medpubbuddies-png.github.io/Med-pub-buddies/index.html"
+);
+
+},1500);
 
 
 }
 
+
 </script>
 
+
 </body>
+
 </html>
