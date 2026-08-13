@@ -79,7 +79,6 @@ button:hover{
 
 <div class="container">
 
-
 <h1>
 MedPub Buddies
 </h1>
@@ -142,26 +141,20 @@ const client = createClient(
 
 
 
-
-/* =========================
+/* ==========================
    CREATE ACCOUNT
-========================= */
-
+========================== */
 
 async function signUp(){
-
 
 const email =
 document.getElementById("email").value.trim();
 
-
 const password =
 document.getElementById("password").value;
 
-
 const message =
 document.getElementById("message");
-
 
 
 if(!email || !password){
@@ -174,10 +167,18 @@ return;
 }
 
 
+if(password.length < 6){
+
+message.innerHTML =
+"Password must be at least 6 characters.";
+
+return;
+
+}
+
 
 message.innerHTML =
 "Creating account...";
-
 
 
 const { error } =
@@ -197,7 +198,6 @@ emailRedirectTo:
 });
 
 
-
 if(error){
 
 message.innerHTML =
@@ -208,7 +208,6 @@ return;
 }
 
 
-
 message.innerHTML =
 "Account created! Please check your email and confirm your account.";
 
@@ -216,26 +215,20 @@ message.innerHTML =
 
 
 
-
-/* =========================
+/* ==========================
    LOGIN
-========================= */
-
+========================== */
 
 async function signIn(){
-
 
 const email =
 document.getElementById("email").value.trim();
 
-
 const password =
 document.getElementById("password").value;
 
-
 const message =
 document.getElementById("message");
-
 
 
 if(!email || !password){
@@ -248,10 +241,8 @@ return;
 }
 
 
-
 message.innerHTML =
 "Logging in...";
-
 
 
 const { data, error } =
@@ -264,7 +255,6 @@ password:password
 });
 
 
-
 if(error){
 
 message.innerHTML =
@@ -275,40 +265,36 @@ return;
 }
 
 
-
-if(!data.user){
+if(!data || !data.user){
 
 message.innerHTML =
-"Login failed. Please try again.";
+"Login failed.";
 
 return;
 
 }
 
 
-
 message.innerHTML =
-"Login successful! Opening MedPub Buddies Home...";
-
+"Login successful! Taking you to Home...";
 
 
 /*
-   IMPORTANT:
-   Login now goes to HOME,
-   NOT directly to the researcher dashboard.
+IMPORTANT:
+There is NO researcher-dashboard redirect here.
+Every successful login goes to index.html.
 */
 
 
 setTimeout(function(){
 
-window.location.href =
-"index.html";
+window.location.replace(
+"https://medpubbuddies-png.github.io/Med-pub-buddies/index.html"
+);
 
 },1000);
 
-
 }
-
 
 
 </script>
