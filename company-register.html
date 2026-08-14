@@ -69,10 +69,11 @@ button:hover{
     background:#0d47a1;
 }
 
-.message{
+#message{
     margin-top:15px;
     text-align:center;
     font-weight:bold;
+    line-height:1.5;
 }
 
 .home{
@@ -102,7 +103,6 @@ Connect with researchers through MedPub Buddies
 </p>
 
 </header>
-
 
 
 <div class="container">
@@ -163,10 +163,7 @@ Create Company Account
 </form>
 
 
-<p
-id="message"
-class="message">
-</p>
+<p id="message"></p>
 
 
 <a
@@ -190,16 +187,12 @@ Back to Home
    SUPABASE
 ========================= */
 
-const supabaseUrl =
-"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
+const client = supabase.createClient(
 
-const supabaseKey =
-"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
 
-const client =
-supabase.createClient(
-    supabaseUrl,
-    supabaseKey
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
+
 );
 
 
@@ -217,7 +210,7 @@ document.getElementById("message");
 
 
 /* =========================
-   REGISTER COMPANY
+   REGISTER
 ========================= */
 
 form.addEventListener(
@@ -264,14 +257,14 @@ document.getElementById(
 
 
 
-/* VALIDATION */
+/* =========================
+   VALIDATION
+========================= */
 
-if(!companyName ||
-   !email ||
-   !password){
+if(!companyName || !email || !password){
 
 message.innerText =
-"Please complete all required fields.";
+"Please complete the required fields.";
 
 return;
 
@@ -288,14 +281,13 @@ return;
 }
 
 
-
 message.innerText =
 "Creating company account...";
 
 
 
 /* =========================
-   CREATE AUTH ACCOUNT
+   CREATE AUTH USER
 ========================= */
 
 const {
@@ -329,34 +321,39 @@ return;
 }
 
 
-
 if(!authData.user){
 
 message.innerText =
-"Unable to create account.";
+"Account could not be created.";
 
 return;
 
 }
 
 
+const user =
+authData.user;
 
-const userId =
-authData.user.id;
-
-
-
-/*
-IMPORTANT:
-
-The user's role is stored in
-the profiles table.
-*/
 
 
 /* =========================
    CREATE PROFILE
-========================= */
+=========================
+
+   Your profiles table is:
+
+   id
+   full_name
+   institution
+   researcher_interest
+   role
+
+   The id is UUID.
+
+   Therefore we use the Auth user's
+   UUID as profiles.id.
+*/
+
 
 const {
     error:profileError
@@ -365,7 +362,13 @@ await client
 .from("profiles")
 .insert({
 
-user_id:userId,
+id:user.id,
+
+full_name:companyName,
+
+institution:"Publication Company",
+
+researcher_interest:field,
 
 role:"company"
 
@@ -376,7 +379,7 @@ role:"company"
 if(profileError){
 
 message.innerText =
-"Account created, but the company profile could not be created: "
+"Account created, but profile creation failed: "
 +
 profileError.message;
 
@@ -414,7 +417,7 @@ description:description
 if(companyError){
 
 message.innerText =
-"Account created, but company information could not be saved: "
+"Profile created, but company information could not be saved: "
 +
 companyError.message;
 
@@ -429,14 +432,13 @@ return;
 ========================= */
 
 message.innerText =
-"Company account created successfully! Please check your email to confirm your account, then log in.";
+"Company account created successfully! Please check your email, confirm your account, and then log in.";
 
 form.reset();
 
 }
 
 );
-
 
 </script>
 
