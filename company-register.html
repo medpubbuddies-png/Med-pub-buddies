@@ -2,50 +2,87 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Publication Company Registration - MedPub Buddies</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #eef2f7;
-    margin: 0;
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+    color:#333;
 }
 
-header {
-    background: #1565c0;
-    color: white;
-    padding: 30px;
-    text-align: center;
+header{
+    background:#1565c0;
+    color:white;
+    padding:30px 20px;
+    text-align:center;
 }
 
-.container {
-    max-width: 600px;
-    margin: 30px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+header h1{
+    margin:0;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.container{
+    max-width:600px;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1565c0;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+input,
+textarea{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    box-sizing:border-box;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:15px;
 }
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    background:#1565c0;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0d47a1;
+}
+
+.message{
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.home{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#1565c0;
+    text-decoration:none;
+}
+
 </style>
 
 </head>
@@ -53,33 +90,94 @@ button {
 
 <body>
 
+
 <header>
-<h1>Register Publication Company</h1>
-<p>Connect with researchers through MedPub Buddies</p>
+
+<h1>
+Register Publication Company
+</h1>
+
+<p>
+Connect with researchers through MedPub Buddies
+</p>
+
 </header>
+
 
 
 <div class="container">
 
+
 <form id="companyForm">
 
-<input type="text" name="company_name" placeholder="Company / Publisher Name" required>
 
-<input type="email" name="email" placeholder="Email" required>
+<input
+type="text"
+id="company_name"
+placeholder="Company / Publisher Name"
+required
+>
 
-<input type="url" name="website" placeholder="Website">
 
-<input type="text" name="field_of_interest" placeholder="Research Field">
+<input
+type="email"
+id="email"
+placeholder="Email"
+required
+>
 
-<textarea name="description" placeholder="Company Description"></textarea>
+
+<input
+type="password"
+id="password"
+placeholder="Create Password"
+required
+>
+
+
+<input
+type="url"
+id="website"
+placeholder="Website"
+>
+
+
+<input
+type="text"
+id="field_of_interest"
+placeholder="Research Field"
+>
+
+
+<textarea
+id="description"
+placeholder="Company Description">
+</textarea>
+
 
 <button type="submit">
-Register
+Create Company Account
 </button>
+
 
 </form>
 
+
+<p
+id="message"
+class="message">
+</p>
+
+
+<a
+class="home"
+href="index.html">
+Back to Home
+</a>
+
+
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -87,56 +185,262 @@ Register
 
 <script>
 
-const supabaseUrl = "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-const supabaseKey = "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+/* =========================
+   SUPABASE
+========================= */
 
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-const supabaseClient = supabase.createClient(
-supabaseUrl,
-supabaseKey
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+const client =
+supabase.createClient(
+    supabaseUrl,
+    supabaseKey
 );
 
 
-const form = document.getElementById("companyForm");
+
+/* =========================
+   FORM
+========================= */
+
+const form =
+document.getElementById("companyForm");
+
+const message =
+document.getElementById("message");
 
 
-form.addEventListener("submit", async function(e){
+
+/* =========================
+   REGISTER COMPANY
+========================= */
+
+form.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
 
-const data = new FormData(form);
+const companyName =
+document.getElementById(
+"company_name"
+).value.trim();
 
 
-const { error } = await supabaseClient
-.from("publication_companies")
-.insert([
-{
-company_name: data.get("company_name"),
-email: data.get("email"),
-website: data.get("website"),
-field_of_interest: data.get("field_of_interest"),
-description: data.get("description")
+const email =
+document.getElementById(
+"email"
+).value.trim();
+
+
+const password =
+document.getElementById(
+"password"
+).value;
+
+
+const website =
+document.getElementById(
+"website"
+).value.trim();
+
+
+const field =
+document.getElementById(
+"field_of_interest"
+).value.trim();
+
+
+const description =
+document.getElementById(
+"description"
+).value.trim();
+
+
+
+/* VALIDATION */
+
+if(!companyName ||
+   !email ||
+   !password){
+
+message.innerText =
+"Please complete all required fields.";
+
+return;
+
 }
-]);
 
 
-if(error){
+if(password.length < 6){
 
-alert("Error: " + error.message);
+message.innerText =
+"Password must be at least 6 characters.";
 
-}else{
+return;
 
-alert("Company registered successfully!");
-form.reset();
+}
+
+
+
+message.innerText =
+"Creating company account...";
+
+
+
+/* =========================
+   CREATE AUTH ACCOUNT
+========================= */
+
+const {
+    data:authData,
+    error:authError
+} =
+await client.auth.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+
+emailRedirectTo:
+"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html"
 
 }
 
 });
 
+
+
+if(authError){
+
+message.innerText =
+authError.message;
+
+return;
+
+}
+
+
+
+if(!authData.user){
+
+message.innerText =
+"Unable to create account.";
+
+return;
+
+}
+
+
+
+const userId =
+authData.user.id;
+
+
+
+/*
+IMPORTANT:
+
+The user's role is stored in
+the profiles table.
+*/
+
+
+/* =========================
+   CREATE PROFILE
+========================= */
+
+const {
+    error:profileError
+} =
+await client
+.from("profiles")
+.insert({
+
+user_id:userId,
+
+role:"company"
+
+});
+
+
+
+if(profileError){
+
+message.innerText =
+"Account created, but the company profile could not be created: "
++
+profileError.message;
+
+return;
+
+}
+
+
+
+/* =========================
+   SAVE COMPANY INFORMATION
+========================= */
+
+const {
+    error:companyError
+} =
+await client
+.from("publication_companies")
+.insert({
+
+company_name:companyName,
+
+email:email,
+
+website:website,
+
+field_of_interest:field,
+
+description:description
+
+});
+
+
+
+if(companyError){
+
+message.innerText =
+"Account created, but company information could not be saved: "
++
+companyError.message;
+
+return;
+
+}
+
+
+
+/* =========================
+   SUCCESS
+========================= */
+
+message.innerText =
+"Company account created successfully! Please check your email to confirm your account, then log in.";
+
+form.reset();
+
+}
+
+);
+
+
 </script>
 
 
 </body>
+
 </html>
