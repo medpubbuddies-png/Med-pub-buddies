@@ -21,6 +21,10 @@ body{
     color:#333;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 header{
     background:#1565c0;
     color:white;
@@ -30,7 +34,18 @@ header{
 
 header h1{
     margin:0 0 10px;
+    font-size:28px;
 }
+
+header p{
+    margin:0;
+    font-size:16px;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
 
 .container{
     max-width:600px;
@@ -38,8 +53,13 @@ header h1{
     background:white;
     padding:25px;
     border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    box-shadow:0 2px 10px rgba(0,0,0,0.10);
 }
+
+
+/* =========================
+   FORM
+========================= */
 
 input,
 textarea{
@@ -49,12 +69,18 @@ textarea{
     border:1px solid #ccc;
     border-radius:6px;
     font-size:15px;
+    font-family:Arial,sans-serif;
 }
 
 textarea{
     min-height:120px;
     resize:vertical;
 }
+
+
+/* =========================
+   BUTTON
+========================= */
 
 button{
     width:100%;
@@ -72,12 +98,27 @@ button:hover{
     background:#0d47a1;
 }
 
+button:disabled{
+    background:#999;
+    cursor:not-allowed;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
 #message{
     margin-top:15px;
     text-align:center;
     font-weight:bold;
     line-height:1.5;
 }
+
+
+/* =========================
+   HOME LINK
+========================= */
 
 .home-link{
     display:block;
@@ -87,6 +128,10 @@ button:hover{
     text-decoration:none;
 }
 
+.home-link:hover{
+    text-decoration:underline;
+}
+
 </style>
 
 </head>
@@ -94,6 +139,10 @@ button:hover{
 
 <body>
 
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -108,10 +157,18 @@ Connect with researchers through MedPub Buddies
 </header>
 
 
+
+<!-- =========================
+     REGISTRATION FORM
+========================= -->
+
 <div class="container">
 
 
 <form id="companyForm">
+
+
+<!-- Company Name -->
 
 <input
 type="text"
@@ -120,19 +177,30 @@ placeholder="Company / Publisher Name"
 required
 >
 
+
+<!-- Email -->
+
 <input
 type="email"
 id="email"
 placeholder="Email"
+autocomplete="email"
 required
 >
+
+
+<!-- Password -->
 
 <input
 type="password"
 id="password"
 placeholder="Create Password"
+autocomplete="new-password"
 required
 >
+
+
+<!-- Website -->
 
 <input
 type="url"
@@ -140,269 +208,326 @@ id="website"
 placeholder="Website"
 >
 
+
+<!-- Research Field -->
+
 <input
 type="text"
 id="field_of_interest"
 placeholder="Research Field"
 >
 
+
+<!-- Description -->
+
 <textarea
 id="description"
 placeholder="Company Description">
 </textarea>
 
-<button type="submit">
+
+<!-- Submit -->
+
+<button
+type="submit"
+id="registerButton"
+>
+
 Create Company Account
+
 </button>
+
 
 </form>
 
 
+<!-- Message -->
+
 <p id="message"></p>
 
 
+<!-- Home -->
+
 <a
 class="home-link"
-href="index.html">
+href="index.html"
+>
+
 Back to Home
+
 </a>
 
 
 </div>
 
 
+
+<!-- =========================
+     SUPABASE
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 
 <script>
 
-/* =================================
-   SUPABASE
-================================= */
 
-const client = supabase.createClient(
+/* ==========================================
+   SUPABASE CONNECTION
+========================================== */
 
-"https://ouuoaxjadcqqvgxoyrxt.supabase.co",
+const supabaseUrl =
+"https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2"
 
+const supabaseKey =
+"sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
+
+
+const client =
+supabase.createClient(
+    supabaseUrl,
+    supabaseKey
 );
 
 
-/* =================================
-   FORM
-================================= */
+
+/* ==========================================
+   FORM ELEMENTS
+========================================== */
 
 const form =
 document.getElementById("companyForm");
+
 
 const message =
 document.getElementById("message");
 
 
-/* =================================
-   REGISTER COMPANY
-================================= */
+const registerButton =
+document.getElementById("registerButton");
+
+
+
+/* ==========================================
+   COMPANY REGISTRATION
+========================================== */
 
 form.addEventListener(
 "submit",
-async function(e){
+async function(event){
 
-e.preventDefault();
-
-
-const companyName =
-document.getElementById(
-"company_name"
-).value.trim();
+    event.preventDefault();
 
 
-const email =
-document.getElementById(
-"email"
-).value.trim();
+    /* --------------------------------------
+       GET FORM VALUES
+    -------------------------------------- */
+
+    const companyName =
+    document
+    .getElementById("company_name")
+    .value
+    .trim();
 
 
-const password =
-document.getElementById(
-"password"
-).value;
+    const email =
+    document
+    .getElementById("email")
+    .value
+    .trim();
 
 
-const website =
-document.getElementById(
-"website"
-).value.trim();
+    const password =
+    document
+    .getElementById("password")
+    .value;
 
 
-const field =
-document.getElementById(
-"field_of_interest"
-).value.trim();
+    const website =
+    document
+    .getElementById("website")
+    .value
+    .trim();
 
 
-const description =
-document.getElementById(
-"description"
-).value.trim();
+    const fieldOfInterest =
+    document
+    .getElementById("field_of_interest")
+    .value
+    .trim();
 
 
-/* ================================
-   VALIDATION
-================================ */
-
-if(
-!companyName ||
-!email ||
-!password
-){
-
-message.innerText =
-"Please complete the required fields.";
-
-return;
-
-}
+    const description =
+    document
+    .getElementById("description")
+    .value
+    .trim();
 
 
-if(password.length < 6){
 
-message.innerText =
-"Password must be at least 6 characters.";
+    /* --------------------------------------
+       VALIDATION
+    -------------------------------------- */
 
-return;
+    if(
+        !companyName ||
+        !email ||
+        !password
+    ){
 
-}
+        message.innerText =
+        "Please complete the required fields.";
+
+        return;
+
+    }
 
 
-message.innerText =
-"Creating company account...";
+    if(password.length < 6){
+
+        message.innerText =
+        "Password must be at least 6 characters.";
+
+        return;
+
+    }
 
 
-/* ================================
-   CREATE AUTH ACCOUNT
-================================ */
 
-const {
-    data,
-    error
-} = await client.auth.signUp({
+    /* --------------------------------------
+       DISABLE BUTTON
+    -------------------------------------- */
 
-email:email,
+    registerButton.disabled = true;
 
-password:password,
+    registerButton.innerText =
+    "Creating Account...";
 
-options:{
 
-emailRedirectTo:
-"https://medpubbuddies-png.github.io/Med-pub-buddies/login.html",
+    message.innerText =
+    "Creating company account...";
 
-data:{
 
-role:"company",
 
-full_name:companyName,
+    /* ======================================
+       CREATE SUPABASE AUTH ACCOUNT
+    ====================================== */
 
-institution:"Publication Company",
+    const {
+        data,
+        error
+    } =
+    await client.auth.signUp({
 
-researcher_interest:field,
+        email: email,
 
-company:companyName
+        password: password,
 
-}
+        options: {
 
-}
+            emailRedirectTo:
+            "https://medpubbuddies-png.github.io/Med-pub-buddies/login.html",
+
+            data: {
+
+                /* USER ROLE */
+
+                role: "company",
+
+
+                /* PROFILE INFORMATION */
+
+                full_name: companyName,
+
+                institution:
+                "Publication Company",
+
+                researcher_interest:
+                fieldOfInterest,
+
+                company:
+                companyName,
+
+
+                /* COMPANY INFORMATION */
+
+                website:
+                website,
+
+                description:
+                description
+
+            }
+
+        }
+
+    });
+
+
+
+    /* ======================================
+       CHECK AUTH ERROR
+    ====================================== */
+
+    if(error){
+
+        message.innerText =
+        "Error: " +
+        error.message;
+
+        registerButton.disabled = false;
+
+        registerButton.innerText =
+        "Create Company Account";
+
+        return;
+
+    }
+
+
+
+    /* ======================================
+       CHECK USER
+    ====================================== */
+
+    if(
+        !data ||
+        !data.user
+    ){
+
+        message.innerText =
+        "Account could not be created. Please try again.";
+
+        registerButton.disabled = false;
+
+        registerButton.innerText =
+        "Create Company Account";
+
+        return;
+
+    }
+
+
+
+    /* ======================================
+       SUCCESS
+    ====================================== */
+
+    message.innerText =
+    "Company account created successfully! Please check your email, confirm your account, and then log in.";
+
+
+    registerButton.disabled = false;
+
+    registerButton.innerText =
+    "Create Company Account";
+
+
+    form.reset();
+
 
 });
-
-
-/* ================================
-   AUTH ERROR
-================================ */
-
-if(error){
-
-message.innerText =
-error.message;
-
-return;
-
-}
-
-
-if(!data || !data.user){
-
-message.innerText =
-"Account could not be created.";
-
-return;
-
-}
-
-
-/*
-The Supabase trigger we created
-automatically creates the profile.
-
-We do NOT insert into profiles here.
-*/
-
-
-message.innerText =
-"Company account created. Saving company information...";
-
-
-/* ================================
-   SAVE COMPANY INFORMATION
-================================ */
-
-const {
-    error:companyError
-} = await client
-.from("publication_companies")
-.insert({
-
-company_name:companyName,
-
-email:email,
-
-website:website,
-
-field_of_interest:field,
-
-description:description
-
-});
-
-
-/* ================================
-   COMPANY TABLE ERROR
-================================ */
-
-if(companyError){
-
-message.innerText =
-"Account and profile were created, but company information could not be saved: "
-+
-companyError.message;
-
-return;
-
-}
-
-
-/* ================================
-   SUCCESS
-================================ */
-
-message.innerText =
-"Company account created successfully! Please check your email, confirm your account, and then log in.";
-
-form.reset();
-
-}
-
-);
 
 </script>
 
