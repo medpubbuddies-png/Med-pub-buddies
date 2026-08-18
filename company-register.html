@@ -268,21 +268,13 @@ Back to Home
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-
 <script>
-
-
-/* ==========================================
-   SUPABASE CONNECTION
-========================================== */
 
 const supabaseUrl =
 "https://ouuoaxjadcqqvgxoyrxt.supabase.co";
 
-
 const supabaseKey =
 "sb_publishable_wNmfSu7S6tHvpso2W5_bGQ_0efriHc2";
-
 
 const client =
 supabase.createClient(
@@ -291,27 +283,15 @@ supabase.createClient(
 );
 
 
-
-/* ==========================================
-   FORM ELEMENTS
-========================================== */
-
 const form =
 document.getElementById("companyForm");
-
 
 const message =
 document.getElementById("message");
 
-
 const registerButton =
 document.getElementById("registerButton");
 
-
-
-/* ==========================================
-   COMPANY REGISTRATION
-========================================== */
 
 form.addEventListener(
 "submit",
@@ -319,10 +299,6 @@ async function(event){
 
     event.preventDefault();
 
-
-    /* --------------------------------------
-       GET FORM VALUES
-    -------------------------------------- */
 
     const companyName =
     document
@@ -365,22 +341,12 @@ async function(event){
     .trim();
 
 
-
-    /* --------------------------------------
-       VALIDATION
-    -------------------------------------- */
-
-    if(
-        !companyName ||
-        !email ||
-        !password
-    ){
+    if(!companyName || !email || !password){
 
         message.innerText =
         "Please complete the required fields.";
 
         return;
-
     }
 
 
@@ -390,146 +356,159 @@ async function(event){
         "Password must be at least 6 characters.";
 
         return;
-
     }
 
-
-
-    /* --------------------------------------
-       DISABLE BUTTON
-    -------------------------------------- */
 
     registerButton.disabled = true;
 
     registerButton.innerText =
     "Creating Account...";
 
-
     message.innerText =
-    "Creating company account...";
+    "Connecting to Supabase...";
 
 
+    try{
 
-    /* ======================================
-       CREATE SUPABASE AUTH ACCOUNT
-    ====================================== */
+        const {
+            data,
+            error
+        } =
+        await client.auth.signUp({
 
-    const {
-        data,
-        error
-    } =
-    await client.auth.signUp({
+            email: email,
 
-        email: email,
+            password: password,
 
-        password: password,
+            options: {
 
-        options: {
+                emailRedirectTo:
+                "https://medpubbuddies-png.github.io/Med-pub-buddies/login.html",
 
-            emailRedirectTo:
-            "https://medpubbuddies-png.github.io/Med-pub-buddies/login.html",
+                data: {
 
-            data: {
+                    role: "company",
 
-                /* USER ROLE */
+                    full_name: companyName,
 
-                role: "company",
+                    institution:
+                    "Publication Company",
 
+                    researcher_interest:
+                    fieldOfInterest,
 
-                /* PROFILE INFORMATION */
+                    company:
+                    companyName,
 
-                full_name: companyName,
+                    website:
+                    website,
 
-                institution:
-                "Publication Company",
+                    description:
+                    description
 
-                researcher_interest:
-                fieldOfInterest,
-
-                company:
-                companyName,
-
-
-                /* COMPANY INFORMATION */
-
-                website:
-                website,
-
-                description:
-                description
+                }
 
             }
 
+        });
+
+
+        /* =========================
+           AUTH ERROR
+        ========================= */
+
+        if(error){
+
+            message.innerText =
+            "SUPABASE ERROR: " +
+            error.message;
+
+            registerButton.disabled = false;
+
+            registerButton.innerText =
+            "Create Company Account";
+
+            return;
         }
 
-    });
+
+        /* =========================
+           SHOW USER RESULT
+        ========================= */
+
+        if(data && data.user){
+
+            console.log(
+                "SUPABASE USER:",
+                data.user
+            );
 
 
+            console.log(
+                "SUPABASE SESSION:",
+                data.session
+            );
 
-    /* ======================================
-       CHECK AUTH ERROR
-    ====================================== */
 
-    if(error){
+            if(data.session){
+
+                message.innerText =
+                "SUCCESS: Account created and user is authenticated. User ID: "
+                +
+                data.user.id;
+
+            }else{
+
+                message.innerText =
+                "SUCCESS: Supabase created the account. Email confirmation is required before login. User ID: "
+                +
+                data.user.id;
+
+            }
+
+
+            registerButton.disabled = false;
+
+            registerButton.innerText =
+            "Create Company Account";
+
+            form.reset();
+
+            return;
+        }
+
+
+        /* =========================
+           NO USER
+        ========================= */
 
         message.innerText =
-        "Error: " +
-        error.message;
+        "Supabase returned no user. Please try again.";
 
         registerButton.disabled = false;
 
         registerButton.innerText =
         "Create Company Account";
 
-        return;
 
-    }
-
-
-
-    /* ======================================
-       CHECK USER
-    ====================================== */
-
-    if(
-        !data ||
-        !data.user
-    ){
+    }catch(err){
 
         message.innerText =
-        "Account could not be created. Please try again.";
+        "JAVASCRIPT ERROR: " +
+        err.message;
 
         registerButton.disabled = false;
 
         registerButton.innerText =
         "Create Company Account";
 
-        return;
-
     }
-
-
-
-    /* ======================================
-       SUCCESS
-    ====================================== */
-
-    message.innerText =
-    "Company account created successfully! Please check your email, confirm your account, and then log in.";
-
-
-    registerButton.disabled = false;
-
-    registerButton.innerText =
-    "Create Company Account";
-
-
-    form.reset();
-
 
 });
 
 </script>
+    
+                
 
 
 </body>
